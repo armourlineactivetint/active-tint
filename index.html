@@ -25,8 +25,7 @@
 <div id="lb">store=?</div>
 <iframe id="f" allow="geolocation *; clipboard-write *" referrerpolicy="no-referrer"></iframe>
 <script>
-  var APP_URL = "https://script.google.com/macros/s/AKfycbx2C_hg1X-z8CYnTJKZ1Z99zClEFnyrmzopBqAaXAkq6IZ9a_Z5boB-6rJI3tLGl6qs/exec";
-  /* Save the login in BOTH localStorage AND a first-party cookie (1 year), read from either. */
+  var APP_URL = "https://script.google.com/macros/s/AKfycbyvn_jGe1vpX5_o0GV3vG2e4wZXwsyfUAsIikBBuFiujHBNmocI4obXqEMYp4Bhsvtk/exec";
   function lsGet(){ try{return localStorage.getItem('at_token')||'';}catch(_){return'';} }
   function ckGet(){ try{var m=document.cookie.match(/(?:^|; )at_token=([^;]+)/);return m?decodeURIComponent(m[1]):'';}catch(_){return'';} }
   function getTok(){ return lsGet() || ckGet(); }
