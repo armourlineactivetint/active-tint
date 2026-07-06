@@ -1,1 +1,553 @@
-<h1>v2 test</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Active Tint</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bk:#1A1A1A;--yl:#F5C518;--rd:#CC1F1F;--gn:#16996b;--am:#854F0B;--gr:#8A8A8A;--lgr:#B4B2A9;--bg:#F1F0EC;--card:#FFFFFF;--line:#E8E6E0;--soft:#F7F6F3;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--bk);overscroll-behavior-y:none;}
+#app{max-width:480px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;background:var(--bg);}
+.view{flex:1;overflow-y:auto;padding-bottom:84px;}
+button{font-family:inherit;border:none;cursor:pointer;background:none;}
+input,textarea{font-family:inherit;font-size:16px;}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--card);}
+.logo{font-weight:900;font-size:17px;letter-spacing:-.02em;font-style:italic;}
+.logo span{color:var(--rd);}
+.addr{font-size:11px;color:var(--gr);text-align:right;line-height:1.35;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 12px;font-size:12px;font-weight:500;}
+.nav{position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;background:var(--card);border-top:1px solid var(--line);display:flex;padding:8px 0 max(10px,env(safe-area-inset-bottom));z-index:50;}
+.nav button{flex:1;text-align:center;color:var(--lgr);font-size:11px;}
+.nav button.on{color:var(--bk);font-weight:500;}
+.nav svg{width:22px;height:22px;display:block;margin:0 auto 2px;}
+.sk{background:linear-gradient(90deg,#EDEBE5 25%,#F5F4F0 50%,#EDEBE5 75%);background-size:200% 100%;animation:sh 1.2s infinite;border-radius:10px;}
+@keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.sheetwrap{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .18s;}
+.sheetwrap.open{opacity:1;pointer-events:auto;}
+.sheet{background:var(--card);border-radius:18px 18px 0 0;padding:14px 18px calc(18px + env(safe-area-inset-bottom));width:100%;max-width:480px;margin:0 auto;transform:translateY(100%);transition:transform .22s cubic-bezier(.2,.8,.2,1);max-height:88dvh;overflow-y:auto;}
+.sheetwrap.open .sheet{transform:none;}
+.grab{width:36px;height:4px;border-radius:2px;background:#D3D1C7;margin:0 auto 14px;}
+.btnP{width:100%;height:50px;border-radius:12px;background:var(--bk);color:var(--yl);font-size:15px;font-weight:500;transition:transform .08s;}
+.btnP:active{transform:scale(.97);}
+.btnGhost{width:100%;height:40px;color:var(--gr);font-size:13px;}
+.shake{animation:shk .4s;}
+@keyframes shk{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+.overlay{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;text-align:center;opacity:0;pointer-events:none;transition:opacity .2s;}
+.overlay.open{opacity:1;pointer-events:auto;}
+.row{display:flex;align-items:center;gap:11px;padding:12px;border-bottom:1px solid var(--line);}
+.row:last-child{border-bottom:none;}
+.av{width:38px;height:38px;border-radius:50%;background:#EFEDE7;color:#5F5E5A;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0;overflow:hidden;}
+.av img{width:100%;height:100%;object-fit:cover;}
+.seg{display:flex;gap:8px;padding:12px 16px 4px;}
+.seg button{flex:1;padding:9px 0;border-radius:9px;font-size:13px;background:var(--soft);color:var(--gr);}
+.seg button.on{background:var(--bk);color:#fff;font-weight:500;}
+.chip{display:inline-block;border-radius:999px;padding:5px 14px;font-size:12px;background:var(--soft);color:var(--gr);}
+.chip.on{background:#FDF6DC;border:1px solid var(--yl);color:var(--bk);font-weight:500;}
+.abs{color:var(--rd);font-weight:700;font-size:15px;letter-spacing:.03em;}
+.btnR{width:100%;height:38px;border-radius:9px;background:var(--rd);color:#fff;font-size:13px;font-weight:500;}
+.aBtn{flex:1;height:38px;border-radius:9px;font-size:12.5px;font-weight:500;}
+.aG{background:var(--gn);color:#fff;}
+.aN{background:var(--soft);color:#5F5E5A;border:1px solid var(--line);font-weight:400;}
+.aR{background:var(--rd);color:#fff;}
+.wheel{height:180px;overflow-y:auto;scroll-snap-type:y mandatory;width:70px;text-align:center;}
+.wheel::-webkit-scrollbar{display:none;}
+.wheel div{height:36px;line-height:36px;scroll-snap-align:center;font-size:17px;color:var(--lgr);}
+.wpad{height:72px;}
+.wsel{position:absolute;left:0;right:0;top:72px;height:36px;background:#fff;border-radius:8px;z-index:0;}
+.spin{width:18px;height:18px;border:2.5px solid rgba(0,0,0,.15);border-top-color:var(--bk);border-radius:50%;animation:rot .7s linear infinite;display:inline-block;vertical-align:middle;}
+@keyframes rot{to{transform:rotate(360deg)}}
+.toast{position:fixed;left:50%;transform:translateX(-50%) translateY(20px);bottom:96px;background:var(--bk);color:#fff;font-size:13px;padding:10px 18px;border-radius:999px;z-index:300;opacity:0;transition:all .25s;pointer-events:none;max-width:88%;}
+.toast.open{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.err{background:var(--rd);}
+</style>
+</head>
+<body>
+<div id="app"><div id="root" class="view"></div><div id="navbar"></div></div>
+<div id="sheets"></div><div id="overlays"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ CONFIG ============ */
+const EXEC='https://script.google.com/macros/s/AKfycbwy8b1fXzpvaaGbcbeYPAxRM8RQQQA1uZLKwXLxVxLi_F451XqOoxxmlXRBzUeSG0OM/exec';
+const SIM=true; /* simulate-tap mode until NFC tags arrive */
+
+/* ============ STATE / CACHE ============ */
+const S={tab:'shop',adminOk:false,adminTab:'todo',repTab:'day',repDate:null,repBack:0,me:null,token:localStorage.getItem('at_token')||''};
+const CG=k=>{try{return JSON.parse(localStorage.getItem('at_c_'+k))}catch(e){return null}};
+const CP=(k,v)=>{try{localStorage.setItem('at_c_'+k,JSON.stringify(v))}catch(e){}};
+function vibe(ms){try{navigator.vibrate&&navigator.vibrate(ms)}catch(e){}}
+function toast(m,err){const t=document.getElementById('toast');t.textContent=m;t.className='toast open'+(err?' err':'');vibe(err?[60,40,60]:0);setTimeout(()=>t.className='toast',2400);}
+
+/* ============ API ============ */
+async function api(action,data){
+  const body=JSON.stringify(Object.assign({action:action,token:S.token},data||{}));
+  const r=await fetch(EXEC,{method:'POST',body:body});
+  return r.json();
+}
+
+/* ============ HELPERS ============ */
+const E=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function ini(n){return E((n||'?').split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase());}
+function avat(name,photo,ring){return `<div class="av" ${ring?'style="background:var(--yl);color:var(--bk)"':''}>${photo?`<img src="${E(photo)}">`:ini(name)}</div>`;}
+const I={shop:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l1-5h16l1 5M4 9v11h16V9M4 9h16M9 20v-6h6v6"/></svg>',
+user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>',
+lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>',
+nfc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 8.5a7 7 0 0112 0M8.5 11a4 4 0 017 0"/><circle cx="12" cy="14.5" r="1.6" fill="currentColor" stroke="none"/></svg>'};
+
+/* ============ NAV ============ */
+function nav(){
+  document.getElementById('navbar').innerHTML=`<div class="nav">
+    <button class="${S.tab==='shop'?'on':''}" onclick="go('shop')">${I.shop}Shop</button>
+    <button class="${S.tab==='me'?'on':''}" onclick="go('me')">${I.user}My profile</button>
+    <button class="${S.tab==='admin'?'on':''}" onclick="go('admin')">${I.lock}Admin</button></div>`;
+}
+function go(t){S.tab=t;nav();render();}
+
+/* ============ RENDER ROUTER ============ */
+function render(){
+  const r=document.getElementById('root');r.scrollTop=0;
+  if(!S.token){renderLogin(r);return;}
+  if(S.tab==='shop') renderShop(r);
+  else if(S.tab==='me') renderMe(r);
+  else renderAdmin(r);
+}
+
+/* ============ LOGIN ============ */
+function renderLogin(r){
+  r.innerHTML=`<div style="min-height:80dvh;display:flex;flex-direction:column;justify-content:center;padding:0 26px;">
+  <p class="logo" style="font-size:26px;text-align:center;margin-bottom:6px;">ACTIVE<span>TINT</span></p>
+  <p style="text-align:center;color:var(--gr);font-size:13px;margin-bottom:30px;">Team attendance</p>
+  <div id="lg1"><p style="font-size:13px;font-weight:500;margin-bottom:6px;">Work email</p>
+  <input id="em" type="email" placeholder="name@gmail.com" style="width:100%;height:50px;border:1px solid var(--line);border-radius:12px;padding:0 14px;background:#fff;">
+  <button class="btnP" style="margin-top:12px;" onclick="sendOtp(this)">Send code</button></div>
+  <div id="lg2" style="display:none;"><p style="font-size:13px;font-weight:500;margin-bottom:6px;">Enter the 6-digit code</p>
+  <input id="cd" inputmode="numeric" maxlength="6" placeholder="••••••" style="width:100%;height:54px;border:1px solid var(--line);border-radius:12px;text-align:center;font-size:24px;letter-spacing:.3em;background:#fff;">
+  <button class="btnP" style="margin-top:12px;" onclick="checkOtp(this)">Sign in</button>
+  <button class="btnGhost" onclick="document.getElementById('lg2').style.display='none';document.getElementById('lg1').style.display='block';">Back</button></div></div>`;
+}
+async function sendOtp(b){
+  const em=document.getElementById('em').value.trim();if(!em)return;
+  b.innerHTML='<span class="spin"></span>';
+  const r=await api('requestOtp',{email:em}).catch(()=>({}));
+  if(r.ok){S._em=em;document.getElementById('lg1').style.display='none';document.getElementById('lg2').style.display='block';toast('Code sent to your email');}
+  else{b.textContent='Send code';toast(r.msg||'Could not send code',1);}
+}
+async function checkOtp(b){
+  const cd=document.getElementById('cd').value.trim();if(cd.length<6)return;
+  b.innerHTML='<span class="spin"></span>';
+  const r=await api('verifyOtp',{email:S._em,code:cd}).catch(()=>({}));
+  if(r.ok){S.token=r.token;S.me=r.me;localStorage.setItem('at_token',r.token);CP('me',r.me);render();}
+  else{b.textContent='Sign in';toast(r.msg||'Wrong code',1);}
+}
+
+/* ============ SHOP (HOME) ============ */
+function renderShop(r){
+  const c=CG('shop'), me=CG('me')||S.me||{};
+  r.innerHTML=shopHTML(c,me,!c);
+  refreshShop();
+}
+function shopHTML(d,me,skel){
+  const inn=d&&d.meIn, hero=d?`
+   <div style="display:flex;justify-content:space-between;align-items:center;background:var(--soft);border-radius:12px;padding:12px 14px;margin-bottom:10px;">
+     <div><p style="font-size:12px;color:var(--gr);">Today</p><p style="font-size:24px;font-weight:700;">${E(d.today||'0 h')}</p></div>
+     <div style="text-align:right;"><p style="font-size:12px;color:var(--gr);">${inn?'In since':'Status'}</p>
+     <p style="font-size:15px;font-weight:500;color:${inn?'var(--gn)':'var(--gr)'};">${inn?E(d.since):'Out'}</p></div></div>`
+   :`<div class="sk" style="height:66px;margin-bottom:10px;"></div>`;
+  const list=(arr,dim)=>arr.map(p=>`<div class="row">${avat(p.name,p.photo,p.me)}
+    <div style="flex:1;"><p style="font-size:14px;font-weight:500;${dim?'color:var(--gr);':''}">${E(p.name)}${p.me?' <span style="font-size:11px;color:#b98e00;">· you</span>':''}</p>
+    <p style="font-size:12px;color:var(--lgr);">${E(p.sub)}</p></div>
+    ${dim?'':'<span style="width:9px;height:9px;border-radius:50%;background:var(--gn);"></span>'}</div>`).join('');
+  return `<div class="hdr"><span class="logo">ACTIVE<span>TINT</span></span><span class="addr">10 Bramhurst Ave,<br>Brampton</span></div>
+  <div style="position:relative;height:150px;background:#C9BFB2 url('shop.jpg') center/cover;">
+    <div class="pill" style="position:absolute;top:10px;right:10px;background:${inn?'var(--gn)':'#555'};color:#fff;">${inn?'✓ You\'re in':'You\'re out'}</div>
+    <div style="position:absolute;left:12px;bottom:10px;color:#fff;font-size:13px;font-weight:500;text-shadow:0 1px 4px rgba(0,0,0,.5);" id="clock"></div></div>
+  <div style="padding:14px 16px;">
+    ${hero}
+    ${SIM?`<button style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:#FDF6DC;border:1px solid var(--yl);border-radius:10px;padding:11px;margin-bottom:16px;color:#6b5500;font-size:13px;font-weight:500;" onclick="doTap(this)">${I.nfc.replace('stroke-width="1.8"','stroke-width="1.8" style="width:18px;height:18px"')} Simulate tap · check ${inn?'out':'in'}</button>`
+      :`<div style="display:flex;align-items:center;gap:8px;background:#FDF6DC;border:1px solid var(--yl);border-radius:10px;padding:10px 12px;margin-bottom:16px;color:#6b5500;font-size:12.5px;">${I.nfc.replace('stroke-width="1.8"','stroke-width="1.8" style="width:17px;height:17px;flex-shrink:0"')} Tap the tag by the door to check ${inn?'out':'in'}</div>`}
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><p style="font-size:15px;font-weight:500;">In shop</p><span class="pill" style="background:#E1F5EE;color:#0F6E56;">${d?d.inShop.length:'…'}</span></div>
+    <div class="card" style="margin-bottom:14px;">${skel?'<div class="sk" style="height:120px;border:none;"></div>':(d.inShop.length?list(d.inShop):'<p style="padding:14px;font-size:13px;color:var(--lgr);text-align:center;">Nobody in yet</p>')}</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><p style="font-size:15px;font-weight:500;color:var(--gr);">Not in</p><span class="pill">${d?d.notIn.length:'…'}</span></div>
+    <div class="card">${skel?'<div class="sk" style="height:60px;border:none;"></div>':(d.notIn.length?list(d.notIn,1):'<p style="padding:14px;font-size:13px;color:var(--lgr);text-align:center;">Everyone is in</p>')}</div>
+  </div>`;
+}
+async function refreshShop(){
+  try{
+    const [b,st]=await Promise.all([api('boot'),api('state')]);
+    if(b.auth){logoutLocal();return;}
+    if(b.me){S.me=b.me;CP('me',b.me);}
+    let today='0 h';
+    const pc=CG('prof0'); if(pc&&pc.days&&pc.days[0]) today=pc.days[0].total;
+    const d={meIn:b.checkedIn,since:(b.since||'').replace('In since ',''),today:today,
+      inShop:(st.inShop||[]).map(p=>({name:p.name,photo:p.photo,sub:p.since,me:S.me&&p.name===S.me.name})),
+      notIn:(st.notIn||[]).map(p=>({name:p.name,photo:p.photo,sub:p.lastOut}))};
+    CP('shop',d);
+    if(S.tab==='shop') document.getElementById('root').innerHTML=shopHTML(d,S.me,false);
+    api('profile',{page:0}).then(p=>{if(p.ok){CP('prof0',p);
+      if(S.tab==='shop'&&p.days&&p.days[0]){const dd=CG('shop');dd.today=p.days[0].total;CP('shop',dd);}}});
+    tick();
+  }catch(e){toast('Offline — showing last known',1);}
+}
+function tick(){const c=document.getElementById('clock');if(!c)return;
+  const n=new Date();c.textContent=n.toLocaleDateString('en-CA',{weekday:'long',month:'long',day:'numeric'})+' · '+n.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+  setTimeout(tick,30000);}
+
+/* ============ TAP + CONFIRMATION ============ */
+async function doTap(btn){
+  vibe(20);const prev=btn.innerHTML;btn.innerHTML='<span class="spin"></span>';
+  const r=await api('tap').catch(()=>({}));
+  btn.innerHTML=prev;
+  if(!r.ok){toast(r.msg||'Tap failed — try again',1);btn.classList.add('shake');setTimeout(()=>btn.classList.remove('shake'),450);return;}
+  showTapOverlay(r);refreshShop();
+}
+function showTapOverlay(r){
+  const isIn=r.type==='OPEN';
+  const o=document.createElement('div');
+  o.className='overlay open';o.style.background=isIn?'var(--gn)':'var(--bk)';
+  o.innerHTML=`<p style="font-size:70px;line-height:1;">✓</p>
+   <p style="font-size:30px;font-weight:700;margin:8px 0 2px;">${isIn?'Checked in':'Checked out'}</p>
+   <p style="font-size:16px;opacity:.85;">${E(r.at)}${r.today?' · Today: '+E(r.today):''}</p>
+   <button id="undoB" style="margin-top:34px;background:rgba(255,255,255,.16);color:#fff;border-radius:999px;padding:11px 26px;font-size:14px;">Undo (10)</button>
+   <button style="position:absolute;bottom:40px;color:rgba(255,255,255,.7);font-size:14px;" onclick="this.parentNode.remove()">Done</button>`;
+  document.getElementById('overlays').appendChild(o);vibe([30,60,30]);
+  let n=10;const ub=o.querySelector('#undoB');
+  const iv=setInterval(()=>{n--;if(n<=0){clearInterval(iv);ub.remove();}else ub.textContent=`Undo (${n})`;},1000);
+  ub.onclick=async()=>{clearInterval(iv);ub.innerHTML='<span class="spin" style="border-top-color:#fff"></span>';
+    const u=await api('undo').catch(()=>({}));o.remove();
+    toast(u.ok?'Undone':'Could not undo',u.ok?0:1);refreshShop();};
+  setTimeout(()=>{if(o.parentNode)o.remove();},11000);
+}
+
+/* ============ MY PROFILE ============ */
+function renderMe(r){
+  const c=CG('prof0'), me=CG('me')||S.me||{};
+  r.innerHTML=meHTML(c,me,!c);
+  api('profile',{page:0}).then(p=>{if(p.auth){logoutLocal();return;}
+    if(p.ok){CP('prof0',p);S._days=p.days;if(S.tab==='me')document.getElementById('root').innerHTML=meHTML(p,p.me,false);}});
+}
+function meHTML(p,me,skel){
+  if(skel) return `<div class="hdr"><span class="logo">ACTIVE<span>TINT</span></span></div><div style="padding:16px;">
+    <div class="sk" style="height:64px;margin-bottom:12px;"></div><div class="sk" style="height:120px;margin-bottom:12px;"></div><div class="sk" style="height:300px;"></div></div>`;
+  S._days=p.days;
+  const inn=p.checkedIn;
+  /* month stats from loaded days */
+  const curYM=p.days[0].date.slice(0,7);
+  let w=0,a=0,ns=0,wm=0;
+  p.days.forEach(d=>{if(d.date.slice(0,7)!==curYM)return;
+    if(d.state==='WORKED'||d.state==='LIVE'){w++;wm+=d.mins;}
+    else if(d.state==='ABSENT'||d.state==='MISSED')a++;
+    else if(d.state==='NOT_SCHEDULED')ns++;});
+  const mName=new Date(p.days[0].date+'T12:00').toLocaleDateString('en-CA',{month:'long'});
+  const months=(p.months||[]).slice(1).map(m=>`<div style="background:var(--soft);border-radius:12px;padding:11px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
+    <p style="font-size:13.5px;font-weight:500;">${E(m.label.split(' ')[0])}</p><p style="font-size:13.5px;font-weight:500;">${E(m.total)}</p></div>`).join('');
+  /* week strip: last Mon..Sun from days */
+  const today=p.days[0].date;
+  const dow=(new Date(today+'T12:00').getDay()+6)%7;
+  const byDate={};p.days.forEach(d=>byDate[d.date]=d);
+  let strip='';
+  for(let i=0;i<7;i++){
+    const dt=new Date(today+'T12:00');dt.setDate(dt.getDate()-dow+i);
+    const ds=dt.toISOString().slice(0,10), d=byDate[ds], isT=ds===today;
+    let v='–',cls='color:var(--lgr);';
+    if(d){if(d.state==='WORKED')                {v=(d.mins/60).toFixed(1).replace(/\.0$/,'')+'h';cls='font-weight:500;';}
+      else if(d.state==='LIVE')                 {v=(d.mins/60).toFixed(1)+'h';cls='font-weight:500;';}
+      else if(d.state==='ABSENT'||d.state==='MISSED'){v='●';cls='color:var(--rd);';}
+      else if(d.state==='PENDING')              {v='●';cls='color:#EF9F27;';}}
+    strip+=`<div style="flex:1;text-align:center;background:${isT?'#FDF6DC':'var(--soft)'};${isT?'border:1px solid var(--yl);':''}border-radius:8px;padding:5px 0;">
+      <p style="font-size:10px;color:${isT?'#8a6d00':'var(--gr)'};">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][i]}</p>
+      <p style="font-size:11.5px;color:var(--gr);">${String(dt.getDate()).padStart(2,'0')}</p>
+      <p style="font-size:10.5px;${cls}">${v}</p></div>`;
+  }
+  const rows=p.days.filter(d=>d.state!=='FUTURE').map((d,i)=>dayRow(d,i)).join('');
+  return `<div class="hdr"><span class="logo">ACTIVE<span>TINT</span></span><span class="addr">10 Bramhurst Ave,<br>Brampton</span></div>
+  <div style="padding:16px;">
+   <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+     ${avat(me.name,me.photo,1).replace('class="av"','class="av" style="width:52px;height:52px;font-size:16px;background:var(--yl);color:var(--bk);"')}
+     <div style="flex:1;"><p style="font-size:17px;font-weight:700;">${E(me.name)}</p>
+     <span class="pill" style="background:${inn?'#E1F5EE':'var(--soft)'};color:${inn?'#0F6E56':'var(--gr)'};margin-top:3px;">
+     <span style="width:6px;height:6px;border-radius:50%;background:${inn?'var(--gn)':'var(--lgr)'};"></span>${inn?E(p.since):'Out'}</span></div></div>
+   <p style="font-size:13px;font-weight:500;margin-bottom:8px;">Months</p>
+   <div style="background:var(--soft);border-radius:12px;padding:12px 14px;margin-bottom:8px;">
+     <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><p style="font-size:13.5px;font-weight:500;">${mName} in review</p><p style="font-size:13.5px;font-weight:700;">${E((p.months&&p.months[0])?p.months[0].total:'')}</p></div>
+     <div style="display:flex;gap:8px;">
+       <div style="flex:1;background:#fff;border-radius:9px;padding:7px 10px;"><p style="font-size:17px;font-weight:700;">${w}</p><p style="font-size:11px;color:var(--gn);">Worked</p></div>
+       <div style="flex:1;background:#fff;border-radius:9px;padding:7px 10px;"><p style="font-size:17px;font-weight:700;">${a}</p><p style="font-size:11px;color:var(--rd);">Absent</p></div>
+       <div style="flex:1;background:#fff;border-radius:9px;padding:7px 10px;"><p style="font-size:17px;font-weight:700;">${ns}</p><p style="font-size:11px;color:var(--gr);">Not sched.</p></div></div></div>
+   ${months}
+   <div style="display:flex;justify-content:space-between;align-items:baseline;margin:14px 0 6px;">
+     <p style="font-size:13px;font-weight:500;">This week</p><p style="font-size:14px;font-weight:700;">${E(p.weekTotal)}</p></div>
+   <div style="display:flex;gap:5px;margin-bottom:16px;">${strip}</div>
+   <p style="font-size:13px;font-weight:500;margin-bottom:8px;">Recent days</p>
+   <div class="card" id="dayList">${rows}</div>
+   <button style="width:100%;height:40px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--gr);font-size:13px;margin:12px 0;" onclick="loadMore(this)">Load 30 more days</button>
+   <button style="display:block;margin:0 auto 8px;color:var(--lgr);font-size:12.5px;" onclick="doLogout()">Sign out</button>
+  </div>`;
+}
+function dayRow(d,i){
+  const base=`<p style="font-size:13.5px;font-weight:500;">${E(d.label)}${d.state==='LIVE'?' · today':''}</p>`;
+  if(d.state==='LIVE') return `<div class="row"><div style="flex:1;">${base}<p style="font-size:12px;color:var(--gn);">${E(d.text)} · ${E(d.total)} so far</p></div><span class="pill" style="background:#E1F5EE;color:#0F6E56;">Live</span></div>`;
+  if(d.state==='WORKED') return `<div class="row"><div style="flex:1;">${base}<p style="font-size:12px;color:var(--gr);">${E(d.text)}</p></div><p style="font-size:14px;font-weight:500;">${E(d.total)}</p></div>`;
+  if(d.state==='PENDING') return `<div class="row"><div style="flex:1;">${base}<p style="font-size:12px;color:var(--am);">${E(d.text)}</p></div><p style="font-size:13px;font-weight:500;color:var(--am);">Pending</p></div>`;
+  if(d.state==='NOT_SCHEDULED') return `<div class="row"><div style="flex:1;"><p style="font-size:13.5px;color:var(--gr);">${E(d.label)}</p><p style="font-size:12px;color:var(--lgr);">Not scheduled</p></div><p style="font-size:13.5px;color:var(--lgr);">—</p></div>`;
+  /* ABSENT or MISSED */
+  const declined=/declined/i.test(d.text);
+  const sub=d.state==='MISSED'?E(d.text):(declined?'Review declined · talk to Abhishek':'No check-in this day');
+  const btn=declined?'':`<button class="btnR" style="margin-top:8px;" onclick="openReq(${i})">Request review</button>`;
+  return `<div style="padding:12px;border-bottom:1px solid var(--line);">
+    <div style="display:flex;align-items:center;">
+      <div style="flex:1;">${base}<p style="font-size:12px;color:var(--gr);">${sub}</p></div>
+      <p class="abs">ABSENT</p></div>${btn}</div>`;
+}
+async function loadMore(b){
+  b.innerHTML='<span class="spin"></span>';
+  const pg=(S._page||0)+1;
+  const p=await api('profile',{page:pg}).catch(()=>({}));
+  if(p.ok){S._page=pg;const start=S._days.length;S._days=S._days.concat(p.days);
+    document.getElementById('dayList').insertAdjacentHTML('beforeend',p.days.filter(d=>d.state!=='FUTURE').map((d,j)=>dayRow(d,start+j)).join(''));
+    b.textContent='Load 30 more days';}
+  else{b.textContent='Load 30 more days';toast('Could not load',1);}
+}
+function doLogout(){api('logout');logoutLocal();}
+function logoutLocal(){S.token='';localStorage.clear();render();}
+
+/* ============ REQUEST REVIEW ============ */
+let RQ={};
+function openReq(i){
+  const d=S._days[i];RQ={date:d.date,label:d.label,missed:d.state==='MISSED'};
+  let inPre=null;
+  if(RQ.missed){const m=d.text.match(/In (\d+:\d+ [AP]M)/);if(m)inPre=m[1];}
+  RQ.in=inPre;RQ.out=null;RQ.field=inPre?'out':'in';
+  sheet(`
+   <div style="text-align:center;margin-bottom:14px;">
+     <p style="font-size:20px;font-weight:700;">${E(d.label)}</p>
+     <p style="font-size:14px;font-weight:700;color:var(--rd);letter-spacing:.05em;margin-top:5px;">MARKED ABSENT · 0 HOURS</p>
+     <p style="font-size:12.5px;color:var(--gr);margin-top:4px;">Worked this day? Tell Abhishek your times.</p></div>
+   <div style="display:flex;gap:10px;margin-bottom:12px;">
+     <div id="tIn" onclick="pick('in')" style="flex:1;text-align:center;background:var(--soft);border-radius:11px;padding:10px 6px;border:1.5px solid transparent;">
+       <p style="font-size:11px;color:var(--gr);">CAME IN ${RQ.missed?'· from your tap 🔒':''}</p>
+       <p id="vIn" style="font-size:19px;font-weight:500;color:${inPre?'var(--bk)':'var(--lgr)'};">${inPre||'Set time'}</p></div>
+     <div id="tOut" onclick="pick('out')" style="flex:1;text-align:center;background:var(--soft);border-radius:11px;padding:10px 6px;border:1.5px solid transparent;">
+       <p style="font-size:11px;color:var(--gr);">LEFT</p><p id="vOut" style="font-size:19px;color:var(--lgr);">Set time</p></div></div>
+   <div id="wheelBox"></div>
+   <p style="font-size:12px;font-weight:500;margin:10px 0 5px;">Note for Abhishek <span style="font-weight:400;color:var(--lgr);">· optional</span></p>
+   <textarea id="rqNote" maxlength="200" placeholder='What happened? e.g. "Forgot my phone in the car"' style="width:100%;min-height:64px;border:1px solid var(--line);border-radius:11px;padding:10px 12px;resize:none;"></textarea>
+   <div style="display:flex;justify-content:space-between;align-items:center;background:#FDF6DC;border-radius:11px;padding:11px 14px;margin:12px 0;">
+     <span style="font-size:13px;color:#6b5500;">You're asking for</span><span id="rqSum" style="font-size:17px;font-weight:700;">—</span></div>
+   <button class="btnP" onclick="sendReq(this)">Send to Abhishek</button>
+   <button class="btnGhost" onclick="closeSheet()">Cancel</button>`);
+  pick(RQ.field);
+}
+function pick(f){
+  if(f==='in'&&RQ.missed)return;
+  RQ.field=f;
+  document.getElementById('tIn').style.borderColor=f==='in'?'var(--bk)':'transparent';
+  document.getElementById('tOut').style.borderColor=f==='out'?'var(--bk)':'transparent';
+  const cur=RQ[f];
+  let h=9,m=0,ap='AM';
+  if(cur){const p=cur.match(/(\d+):(\d+) ([AP]M)/);h=+p[1];m=+p[2];ap=p[3];}
+  const col=(id,items,sel)=>`<div class="wheel" id="${id}"><div class="wpad"></div>${items.map(x=>`<div>${x}</div>`).join('')}<div class="wpad"></div></div>`;
+  document.getElementById('wheelBox').innerHTML=`<div style="position:relative;background:var(--soft);border-radius:11px;display:flex;justify-content:center;">
+   <div class="wsel"></div>${col('wH',[...Array(12)].map((_,i)=>i+1))}${col('wM',[...Array(12)].map((_,i)=>String(i*5).padStart(2,'0')))}${col('wA',['AM','PM'])}</div>
+   <p style="font-size:11.5px;color:var(--lgr);text-align:center;margin-top:5px;">Scroll to pick · 5-minute steps</p>`;
+  snapTo('wH',h-1);snapTo('wM',Math.round(m/5));snapTo('wA',ap==='AM'?0:1);
+  ['wH','wM','wA'].forEach(id=>{let t;document.getElementById(id).addEventListener('scroll',e=>{clearTimeout(t);t=setTimeout(()=>readWheels(),120);});});
+}
+function snapTo(id,idx){const el=document.getElementById(id);el.scrollTop=idx*36;}
+function readWheels(){
+  const g=id=>Math.round(document.getElementById(id).scrollTop/36);
+  const h=g('wH')+1,m=g('wM')*5,ap=g('wA')===0?'AM':'PM';
+  RQ[RQ.field]=`${h}:${String(m).padStart(2,'0')} ${ap}`;
+  document.getElementById(RQ.field==='in'?'vIn':'vOut').textContent=RQ[RQ.field];
+  document.getElementById(RQ.field==='in'?'vIn':'vOut').style.color='var(--bk)';
+  sumReq();
+}
+function to24(t){const p=t.match(/(\d+):(\d+) ([AP]M)/);let h=+p[1]%12;if(p[3]==='PM')h+=12;return h*60+ +p[2];}
+function sumReq(){
+  const s=document.getElementById('rqSum');if(!RQ.in||!RQ.out){s.textContent='—';return;}
+  let mins=to24(RQ.out)-to24(RQ.in);if(mins<=0)mins+=1440;
+  s.textContent=Math.floor(mins/60)+' h '+String(mins%60).padStart(2,'0')+' m';
+}
+function hhmm(t){const p=t.match(/(\d+):(\d+) ([AP]M)/);let h=+p[1]%12;if(p[3]==='PM')h+=12;return String(h).padStart(2,'0')+':'+p[2];}
+async function sendReq(b){
+  if(!RQ.in||!RQ.out){toast('Set both times first',1);return;}
+  b.innerHTML='<span class="spin" style="border-top-color:var(--yl)"></span>';
+  const r=await api('requestReview',{date:RQ.date,inTime:hhmm(RQ.in),outTime:hhmm(RQ.out),note:document.getElementById('rqNote').value}).catch(()=>({}));
+  closeSheet();
+  if(r.ok){toast('Sent to Abhishek — day is pending review');renderMe(document.getElementById('root'));}
+  else toast(r.msg||'Could not send',1);
+}
+
+/* ============ SHEETS ============ */
+function sheet(html){
+  const w=document.createElement('div');w.className='sheetwrap';
+  w.innerHTML=`<div class="sheet"><div class="grab"></div>${html}</div>`;
+  w.onclick=e=>{if(e.target===w)closeSheet();};
+  document.getElementById('sheets').appendChild(w);
+  requestAnimationFrame(()=>w.classList.add('open'));
+}
+function closeSheet(){const w=document.querySelector('.sheetwrap');if(!w)return;w.classList.remove('open');setTimeout(()=>w.remove(),240);}
+
+/* ============ ADMIN ============ */
+function renderAdmin(r){
+  if(!S.adminOk){renderPin(r);return;}
+  r.innerHTML=`<div style="background:var(--bk);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;">
+    <p style="color:#fff;font-size:16px;font-weight:700;">🔓 Admin</p>
+    <span id="pendChip" class="pill" style="background:var(--rd);color:#fff;">…</span></div>
+   <div class="seg"><button class="${S.adminTab==='todo'?'on':''}" onclick="S.adminTab='todo';renderAdmin(document.getElementById('root'))">To-do</button>
+   <button class="${S.adminTab==='rep'?'on':''}" onclick="S.adminTab='rep';renderAdmin(document.getElementById('root'))">Reports</button></div>
+   <div id="admBody" style="padding:10px 16px 16px;"><div class="sk" style="height:200px;"></div></div>`;
+  if(S.adminTab==='todo')loadInbox();else loadReports();
+}
+function renderPin(r){
+  r.innerHTML=`<div style="min-height:70dvh;display:flex;flex-direction:column;justify-content:center;padding:0 30px;">
+   <p style="text-align:center;font-size:16px;font-weight:700;">Admin access</p>
+   <p style="text-align:center;font-size:13px;color:var(--gr);margin:4px 0 16px;">Enter PIN</p>
+   <div id="dots" style="display:flex;justify-content:center;gap:12px;margin-bottom:22px;">${[0,1,2,3].map(()=>'<span style="width:12px;height:12px;border-radius:50%;background:#EFEDE7;border:1px solid #D3D1C7;display:inline-block;"></span>').join('')}</div>
+   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:250px;margin:0 auto;">
+   ${[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(k=>k===''?'<span></span>':`<button style="height:54px;border:1px solid var(--line);border-radius:12px;background:var(--soft);font-size:18px;font-weight:500;" onclick="pinKey('${k}')">${k}</button>`).join('')}</div></div>`;
+  S._pin='';
+}
+function pinKey(k){
+  if(k==='⌫')S._pin=S._pin.slice(0,-1);else if(S._pin.length<4)S._pin+=k;
+  const d=document.getElementById('dots');
+  [...d.children].forEach((c,i)=>c.style.background=i<S._pin.length?'var(--bk)':'#EFEDE7');
+  if(S._pin.length===4){
+    api('inbox',{pin:S._pin}).then(r=>{
+      if(r.ok){S.adminPin=S._pin;S.adminOk=true;CP('inbox',r);renderAdmin(document.getElementById('root'));}
+      else{d.classList.add('shake');vibe([60,40,60]);setTimeout(()=>{d.classList.remove('shake');S._pin='';[...d.children].forEach(c=>c.style.background='#EFEDE7');},450);}
+    });
+  }
+}
+function loadInbox(){
+  const c=CG('inbox');if(c)paintInbox(c);
+  api('inbox',{pin:S.adminPin}).then(r=>{if(r.ok){CP('inbox',r);if(S.adminTab==='todo')paintInbox(r);}});
+}
+function paintInbox(d){
+  document.getElementById('pendChip').textContent=d.count+' pending';
+  S._cards=d.cards;
+  const b=document.getElementById('admBody');if(!b)return;
+  if(!d.cards.length){b.innerHTML='<p style="text-align:center;color:var(--gr);padding:50px 0;font-size:14px;">All clear ✓</p>';return;}
+  b.innerHTML=d.cards.map((c,i)=>{
+    const nice=new Date(c.date+'T12:00').toLocaleDateString('en-CA',{weekday:'short',month:'short',day:'numeric'});
+    let line='',btns='';
+    if(c.kind==='MISSED'){line=`<span style="color:var(--rd);">${E(c.line)}</span>`;
+      btns=`<button class="aBtn aG" onclick="setTimesUI(${i})">Set out time</button><button class="aBtn aN" onclick="decide(${i},'keep0')">Keep 0 h</button>`;}
+    else if(c.kind==='ABSENT'){line=`<span style="color:var(--rd);">no check-in</span>`;
+      btns=`<button class="aBtn aG" onclick="setTimesUI(${i})">Set times</button><button class="aBtn aN" onclick="decide(${i},'notScheduled')">Not scheduled</button><button class="aBtn aR" onclick="decide(${i},'absent')">Absent</button>`;}
+    else if(c.kind==='REQUEST'){line=`<span style="color:var(--am);">${E(c.line)}</span>`;
+      btns=`<button class="aBtn aG" onclick="decide(${i},'approveRequest')">Approve</button><button class="aBtn aN" onclick="setTimesUI(${i},1)">Edit times</button><button class="aBtn aR" onclick="decide(${i},'rejectRequest')">Reject</button>`;}
+    else if(c.kind==='LONG'){line=`<span style="color:var(--am);">${E(c.line)}</span>`;
+      btns=`<button class="aBtn aG" onclick="decide(${i},'approveLong')">Approve</button><button class="aBtn aN" onclick="setTimesUI(${i})">Set times</button>`;}
+    else{line=E(c.line);btns=`<button class="aBtn aN" onclick="decide(${i},'dismissAlert')">It's fine</button>`;}
+    return `<div class="card" id="card${i}" style="padding:12px;margin-bottom:8px;">
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:9px;">${avat(c.name,c.photo)}
+        <div style="flex:1;"><p style="font-size:14.5px;font-weight:500;">${E(c.name)} · ${nice}</p>
+        <p style="font-size:12.5px;">${line}</p>${c.note?`<p style="font-size:12.5px;color:var(--gr);font-style:italic;margin-top:2px;">"${E(c.note)}"</p>`:''}</div></div>
+      <div style="display:flex;gap:8px;">${btns}</div></div>`;
+  }).join('')+`<button style="width:100%;height:42px;border:1px dashed #D3D1C7;border-radius:10px;background:#fff;color:var(--gr);font-size:13px;" onclick="bulkNS(this)">Mark all remaining absents as not scheduled</button>`;
+}
+async function decide(i,what,extra){
+  const c=S._cards[i], el=document.getElementById('card'+i);
+  el.style.opacity='.35';vibe(15);
+  const r=await api('decide',Object.assign({pin:S.adminPin,what:what,email:c.email,date:c.date,punchRow:c.punchRow,reqId:c.reqId,alertId:c.alertId},extra||{})).catch(()=>({}));
+  if(r.ok){el.style.display='none';toast('Done');loadInbox();}
+  else{el.style.opacity='1';el.classList.add('shake');setTimeout(()=>el.classList.remove('shake'),450);toast(r.msg||'Failed',1);}
+}
+async function bulkNS(b){
+  b.innerHTML='<span class="spin"></span>';
+  const abs=S._cards.map((c,i)=>({c,i})).filter(x=>x.c.kind==='ABSENT');
+  for(const x of abs){await api('decide',{pin:S.adminPin,what:'notScheduled',email:x.c.email,date:x.c.date}).catch(()=>({}));}
+  toast('Cleared');loadInbox();
+}
+/* admin set-times sheet (reuses wheel picker) */
+function setTimesUI(i,isReq){
+  const c=S._cards[i];
+  const nice=new Date(c.date+'T12:00').toLocaleDateString('en-CA',{weekday:'short',month:'short',day:'numeric'});
+  RQ={date:c.date,admin:true,cardIdx:i,isReq:isReq,in:null,out:null,field:'in',missed:false};
+  if(c.kind==='MISSED'){const m=c.line.match(/in (\d+:\d+ [AP]M)/);if(m){RQ.in=m[1];RQ.field='out';}}
+  if(isReq){const m=c.line.match(/(\d+:\d+ [AP]M) – (\d+:\d+ [AP]M)/);if(m){RQ.in=m[1];RQ.out=m[2];}}
+  sheet(`
+   <div style="text-align:center;margin-bottom:12px;"><p style="font-size:18px;font-weight:700;">${E(c.name)} · ${nice}</p>
+   <p style="font-size:12.5px;color:var(--gr);">Set the real times — hours recalc automatically</p></div>
+   <div style="display:flex;gap:10px;margin-bottom:12px;">
+     <div id="tIn" onclick="pick('in')" style="flex:1;text-align:center;background:var(--soft);border-radius:11px;padding:10px 6px;border:1.5px solid transparent;">
+       <p style="font-size:11px;color:var(--gr);">IN</p><p id="vIn" style="font-size:19px;font-weight:500;color:${RQ.in?'var(--bk)':'var(--lgr)'};">${RQ.in||'Set time'}</p></div>
+     <div id="tOut" onclick="pick('out')" style="flex:1;text-align:center;background:var(--soft);border-radius:11px;padding:10px 6px;border:1.5px solid transparent;">
+       <p style="font-size:11px;color:var(--gr);">OUT</p><p id="vOut" style="font-size:19px;font-weight:500;color:${RQ.out?'var(--bk)':'var(--lgr)'};">${RQ.out||'Set time'}</p></div></div>
+   <div id="wheelBox"></div>
+   <div style="display:flex;justify-content:space-between;align-items:center;background:var(--soft);border-radius:11px;padding:11px 14px;margin:12px 0;">
+     <span style="font-size:13px;color:var(--gr);">Day total</span><span id="rqSum" style="font-size:17px;font-weight:700;">—</span></div>
+   <button class="btnP" onclick="adminSave(this)">Save</button>
+   <button class="btnGhost" onclick="closeSheet()">Cancel</button>`);
+  pick(RQ.field);sumReq();
+}
+async function adminSave(b){
+  if(!RQ.in||!RQ.out){toast('Set both times',1);return;}
+  b.innerHTML='<span class="spin" style="border-top-color:var(--yl)"></span>';
+  const c=S._cards[RQ.cardIdx];let r;
+  if(RQ.isReq) r=await api('decide',{pin:S.adminPin,what:'approveRequest',reqId:c.reqId,inTime:hhmm(RQ.in),outTime:hhmm(RQ.out)}).catch(()=>({}));
+  else r=await api('setTimes',{pin:S.adminPin,email:c.email,date:c.date,inTime:hhmm(RQ.in),outTime:hhmm(RQ.out)}).catch(()=>({}));
+  closeSheet();
+  if(r.ok){toast('Saved');loadInbox();}else toast(r.msg||'Failed',1);
+}
+/* Reports */
+function loadReports(){
+  const b=document.getElementById('admBody');
+  if(!S.repDate)S.repDate=new Date().toISOString().slice(0,10);
+  b.innerHTML=`<div style="display:flex;gap:6px;margin-bottom:10px;">
+    <button class="chip ${S.repTab==='day'?'on':''}" onclick="S.repTab='day';loadReports()">Day</button>
+    <button class="chip ${S.repTab==='week'?'on':''}" onclick="S.repTab='week';S.repBack=0;loadReports()">Week</button>
+    <button class="chip ${S.repTab==='month'?'on':''}" onclick="S.repTab='month';S.repBack=0;loadReports()">Month</button></div>
+    <div id="repBody"><div class="sk" style="height:180px;"></div></div>`;
+  if(S.repTab==='day'){
+    api('dayReport',{pin:S.adminPin,date:S.repDate}).then(r=>{
+      if(!r.ok)return;
+      const nice=new Date(S.repDate+'T12:00').toLocaleDateString('en-CA',{weekday:'long',month:'short',day:'numeric'});
+      document.getElementById('repBody').innerHTML=`
+       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+         <button style="font-size:20px;color:var(--gr);padding:0 10px;" onclick="shiftDay(-1)">‹</button>
+         <p style="font-size:15px;font-weight:700;">${nice}</p>
+         <button style="font-size:20px;color:var(--gr);padding:0 10px;" onclick="shiftDay(1)">›</button></div>
+       <div style="display:flex;gap:8px;margin-bottom:10px;">
+         <div style="flex:1;background:var(--soft);border-radius:10px;padding:9px 12px;"><p style="font-size:11.5px;color:var(--gr);">Worked</p><p style="font-size:18px;font-weight:700;">${r.worked}<span style="font-size:12px;color:var(--gr);font-weight:400;"> of ${r.rows.length}</span></p></div>
+         <div style="flex:1;background:var(--soft);border-radius:10px;padding:9px 12px;"><p style="font-size:11.5px;color:var(--gr);">Total hours</p><p style="font-size:18px;font-weight:700;">${E(r.totalHours)}</p></div></div>
+       <div class="card">${r.rows.map(p=>`<div class="row">${avat(p.name,p.photo)}
+         <div style="flex:1;"><p style="font-size:13.5px;font-weight:500;">${E(p.name)}${p.edited?' <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#378ADD;"></span>':''}</p>
+         <p style="font-size:12px;color:var(--gr);">${E(p.text)||'—'}</p></div>
+         ${(p.state==='ABSENT'||p.state==='MISSED')?'<p class="abs">ABSENT</p>':`<p style="font-size:13.5px;font-weight:500;">${E(p.total)}</p>`}</div>`).join('')}</div>`;
+    });
+  }else{
+    api('totals',{pin:S.adminPin,range:S.repTab,back:S.repBack}).then(r=>{
+      if(!r.ok)return;
+      document.getElementById('repBody').innerHTML=`
+       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+         <button style="font-size:20px;color:var(--gr);padding:0 10px;" onclick="S.repBack++;loadReports()">‹</button>
+         <p style="font-size:14px;font-weight:700;">${E(r.label)}</p>
+         <button style="font-size:20px;color:var(--gr);padding:0 10px;" onclick="if(S.repBack>0){S.repBack--;loadReports()}">›</button></div>
+       <div class="card" style="margin-bottom:10px;">${r.rows.map(p=>`<div class="row"><p style="flex:1;font-size:13.5px;">${E(p.name)}</p><p style="font-size:13.5px;font-weight:700;">${E(p.total)}</p></div>`).join('')}</div>
+       ${S.repTab==='month'?`<button class="btnP" style="height:44px;font-size:13.5px;" onclick="doCloseMonth(this)">Close this month (after payroll)</button>`:''}`;
+    });
+  }
+}
+function shiftDay(n){const d=new Date(S.repDate+'T12:00');d.setDate(d.getDate()+n);S.repDate=d.toISOString().slice(0,10);loadReports();}
+async function doCloseMonth(b){
+  const t=new Date();t.setMonth(t.getMonth()-S.repBack);
+  const m=t.toISOString().slice(0,7);
+  b.innerHTML='<span class="spin" style="border-top-color:var(--yl)"></span>';
+  const r=await api('closeMonth',{pin:S.adminPin,month:m}).catch(()=>({}));
+  if(r.ok)toast('Month '+m+' closed');else toast(r.msg||'Could not close',1);
+  loadReports();
+}
+
+/* ============ BOOT ============ */
+nav();render();
+if(S.token)refreshShop();
+</script>
+</body>
+</html>
