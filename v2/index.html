@@ -15,9 +15,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--bk);overs
 #app{max-width:480px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;background:var(--bg);}
 .view{flex:1;overflow-y:auto;padding-bottom:92px;}
 button{font-family:inherit;border:none;cursor:pointer;background:none;}
-input,textarea{font-family:inherit;font-size:16px;}
+input,textarea,select{font-family:inherit;font-size:16px;}
 .hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--card);}
-.hlogo{height:34px;display:block;}
+.hlogo{height:46px;display:block;mix-blend-mode:multiply;}
+.lgo{mix-blend-mode:multiply;object-fit:contain;display:block;}
+.badgeLogo{background:#fff;border-radius:14px;padding:9px 16px;display:inline-block;}
 .addr{font-size:12px;color:var(--gr);text-align:right;line-height:1.4;}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;}
 .pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 13px;font-size:13px;font-weight:500;}
@@ -35,6 +37,7 @@ input,textarea{font-family:inherit;font-size:16px;}
 .btnP{width:100%;height:54px;border-radius:13px;background:var(--bk);color:var(--yl);font-size:16px;font-weight:700;transition:transform .08s;}
 .btnP:active{transform:scale(.97);}
 .btnGhost{width:100%;height:44px;color:var(--gr);font-size:14px;}
+.btnOut{width:100%;height:48px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--bk);font-size:15px;font-weight:700;}
 .shake{animation:shk .4s;}
 @keyframes shk{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
 .overlay{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;text-align:center;opacity:0;pointer-events:none;transition:opacity .2s;}
@@ -52,11 +55,9 @@ input,textarea{font-family:inherit;font-size:16px;}
 .aG{background:var(--gn);color:#fff;}
 .aN{background:var(--soft);color:#5F5E5A;border:1px solid var(--line);font-weight:400;}
 .aR{background:var(--rd);color:#fff;}
-.wheel{height:180px;overflow-y:auto;scroll-snap-type:y mandatory;width:74px;text-align:center;}
-.wheel::-webkit-scrollbar{display:none;}
-.wheel div{height:36px;line-height:36px;scroll-snap-align:center;font-size:18px;color:var(--lgr);}
-.wpad{height:72px;}
-.wsel{position:absolute;left:0;right:0;top:72px;height:36px;background:#fff;border-radius:8px;z-index:0;}
+.tIn{width:64px;height:56px;border:1px solid var(--line);border-radius:12px;background:#fff;text-align:center;font-size:24px;font-weight:700;color:var(--bk);}
+.tIn:focus{outline:2px solid var(--bk);border-color:var(--bk);}
+.tSel{height:56px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:18px;font-weight:700;padding:0 12px;color:var(--bk);-webkit-appearance:none;appearance:none;text-align:center;}
 .spin{width:20px;height:20px;border:3px solid rgba(0,0,0,.15);border-top-color:var(--bk);border-radius:50%;animation:rot .7s linear infinite;display:inline-block;vertical-align:middle;}
 .spinY{width:20px;height:20px;border:3px solid rgba(255,255,255,.25);border-top-color:var(--yl);border-radius:50%;animation:rot .7s linear infinite;display:inline-block;vertical-align:middle;}
 @keyframes rot{to{transform:rotate(360deg)}}
@@ -67,14 +68,16 @@ input,textarea{font-family:inherit;font-size:16px;}
 .pager button{height:44px;min-width:92px;border:1px solid var(--line);border-radius:11px;background:#fff;font-size:14px;font-weight:700;color:var(--bk);padding:0 14px;}
 .pager button:disabled{opacity:.35;}
 .pager p{flex:1;text-align:center;font-size:16px;font-weight:700;}
-.pinKey{width:76px;height:76px;border-radius:50%;background:var(--soft);font-size:24px;font-weight:500;color:var(--bk);}
-.pinKey:active{background:#E8E6E0;}
+.pinKey{width:76px;height:76px;border-radius:50%;background:#fff;border:1px solid var(--line);box-shadow:0 1px 3px rgba(26,26,26,.06);font-size:26px;font-weight:500;color:var(--bk);display:flex;align-items:center;justify-content:center;transition:transform .06s;}
+.pinKey:active{background:var(--soft);transform:scale(.94);}
+.pinKey svg{width:28px;height:28px;}
 </style>
 </head>
 <body>
 <div id="app"><div id="root" class="view"></div><div id="navbar"></div></div>
 <div id="sheets"></div><div id="overlays"></div>
 <div class="toast" id="toast"></div>
+<input type="file" id="phF" accept="image/*" style="display:none" onchange="photoPicked(this)">
 
 <script>
 /* ============ CONFIG ============ */
@@ -103,7 +106,8 @@ function avat(name,photo,ring){return `<div class="av" ${ring?'style="background
 const I={shop:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l1-5h16l1 5M4 9v11h16V9M4 9h16M9 20v-6h6v6"/></svg>',
 user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>',
 lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>',
-nfc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 8.5a7 7 0 0112 0M8.5 11a4 4 0 017 0"/><circle cx="12" cy="14.5" r="1.6" fill="currentColor" stroke="none"/></svg>'};
+nfc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 8.5a7 7 0 0112 0M8.5 11a4 4 0 017 0"/><circle cx="12" cy="14.5" r="1.6" fill="currentColor" stroke="none"/></svg>',
+back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 6H9L3 12l6 6h12a1 1 0 001-1V7a1 1 0 00-1-1z"/><path d="M12 9.5l5 5M17 9.5l-5 5"/></svg>'};
 
 /* ============ NAV ============ */
 function nav(){
@@ -126,7 +130,7 @@ function render(){
 /* ============ LOGIN ============ */
 function renderLogin(r){
   r.innerHTML=`<div style="min-height:80dvh;display:flex;flex-direction:column;justify-content:center;padding:0 26px;">
-  <img src="${LOGO}" style="height:64px;object-fit:contain;margin:0 auto 8px;display:block;">
+  <img src="${LOGO}" class="lgo" style="height:84px;margin:0 auto 10px;">
   <p style="text-align:center;color:var(--gr);font-size:14px;margin-bottom:30px;">Team attendance</p>
   <div id="lg1"><p style="font-size:14px;font-weight:700;margin-bottom:7px;">Work email</p>
   <input id="em" type="email" placeholder="name@gmail.com" style="width:100%;height:54px;border:1px solid var(--line);border-radius:13px;padding:0 16px;background:#fff;">
@@ -168,7 +172,7 @@ function shopHTML(d,me,skel){
     return head+`
     <div style="padding:20px 16px;display:flex;flex-direction:column;min-height:70dvh;">
       <div style="background:var(--brd);border-radius:18px;padding:34px 20px;text-align:center;color:#fff;margin-bottom:14px;">
-        <img src="${LOGO}" style="height:40px;object-fit:contain;margin-bottom:14px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3));">
+        <span class="badgeLogo" style="margin-bottom:16px;"><img src="${LOGO}" style="height:38px;object-fit:contain;display:block;"></span>
         <p style="font-size:30px;font-weight:900;letter-spacing:.02em;">YOU'RE OUT</p>
         <p style="font-size:14px;color:#FFD9D9;margin-top:6px;" id="clock"></p>
         ${d.today&&d.today!=='0 h'?`<p style="font-size:14px;color:#FFD9D9;margin-top:4px;">Today so far: <b style="color:#fff;">${E(d.today)}</b></p>`:''}
@@ -184,7 +188,7 @@ function shopHTML(d,me,skel){
     <p style="font-size:13px;color:var(--lgr);">${E(p.sub)}</p></div>
     ${dim?'':'<span style="width:10px;height:10px;border-radius:50%;background:var(--gn);"></span>'}</div>`).join('');
   return head+`
-  <div style="position:relative;height:150px;background:#C9BFB2 url('shop.jpg') center/cover;">
+  <div style="position:relative;height:150px;background:#C9BFB2 url('shop.png') center/cover;">
     <div class="pill" style="position:absolute;top:10px;right:10px;background:var(--gn);color:#fff;">✓ You're in</div>
     <div style="position:absolute;left:12px;bottom:10px;color:#fff;font-size:14px;font-weight:700;text-shadow:0 1px 4px rgba(0,0,0,.6);" id="clock"></div></div>
   <div style="padding:14px 16px;">
@@ -232,7 +236,7 @@ function showTapOverlay(r){
   const isIn=r.type==='OPEN';
   const o=document.createElement('div');
   o.className='overlay open';o.style.background=isIn?'var(--gn)':'var(--brd)';
-  o.innerHTML=`<img src="${LOGO}" style="height:44px;object-fit:contain;margin-bottom:22px;filter:drop-shadow(0 1px 3px rgba(0,0,0,.35));">
+  o.innerHTML=`<span class="badgeLogo" style="margin-bottom:24px;"><img src="${LOGO}" style="height:40px;object-fit:contain;display:block;"></span>
    <p style="font-size:72px;line-height:1;${isIn?'':'color:var(--yl);'}">✓</p>
    <p style="font-size:32px;font-weight:900;margin:10px 0 3px;">${isIn?'Checked in':'Checked out'}</p>
    <p style="font-size:17px;opacity:.9;">${E(r.at)}${r.today?' · Today: '+E(r.today):''}</p>
@@ -286,13 +290,19 @@ function meHTML(p,me,skel){
       <p style="font-size:11.5px;${cls}">${v}</p></div>`;
   }
   const rows=p.days.filter(d=>d.state!=='FUTURE'&&d.state!=='BEFORE_START').map((d,i)=>dayRow(d,i)).join('');
+  const bigAv=`<div class="av" style="width:56px;height:56px;font-size:17px;background:var(--yl);color:var(--bk);">${me.photo?`<img src="${E(me.photo)}">`:ini(me.name)}</div>
+     <span style="position:absolute;right:-3px;bottom:-3px;width:22px;height:22px;border-radius:50%;background:var(--bk);color:#fff;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg);">
+     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:11px;height:11px;"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></span>`;
   return head+`
   <div style="padding:16px;">
    <div style="display:flex;align-items:center;gap:13px;margin-bottom:16px;">
-     ${avat(me.name,me.photo,1).replace('class="av"','class="av" style="width:56px;height:56px;font-size:17px;background:var(--yl);color:var(--bk);"')}
+     <div style="position:relative;flex-shrink:0;" onclick="document.getElementById('phF').click()">${bigAv}</div>
      <div style="flex:1;"><p style="font-size:19px;font-weight:900;">${E(me.name)}</p>
      <span class="pill" style="background:${inn?'#E1F5EE':'var(--soft)'};color:${inn?'#0F6E56':'var(--gr)'};margin-top:4px;">
      <span style="width:7px;height:7px;border-radius:50%;background:${inn?'var(--gn)':'var(--lgr)'};"></span>${inn?E(p.since):'Out'}</span></div></div>
+   <div style="display:flex;justify-content:space-between;align-items:baseline;margin:0 0 6px;">
+     <p style="font-size:15px;font-weight:700;">This week</p><p style="font-size:16px;font-weight:900;">${E(p.weekTotal)}</p></div>
+   <div style="display:flex;gap:5px;margin-bottom:18px;">${strip}</div>
    <p style="font-size:15px;font-weight:700;margin-bottom:8px;">Months</p>
    <div style="background:var(--soft);border-radius:13px;padding:13px 15px;margin-bottom:8px;">
      <div style="display:flex;justify-content:space-between;margin-bottom:9px;"><p style="font-size:15px;font-weight:700;">${mName} in review</p><p style="font-size:15px;font-weight:900;">${E((p.months&&p.months[0])?p.months[0].total:'')}</p></div>
@@ -301,14 +311,28 @@ function meHTML(p,me,skel){
        <div style="flex:1;background:#fff;border-radius:10px;padding:9px 11px;"><p style="font-size:19px;font-weight:900;">${a}</p><p style="font-size:12px;color:var(--rd);font-weight:700;">Absent</p></div>
        <div style="flex:1;background:#fff;border-radius:10px;padding:9px 11px;"><p style="font-size:19px;font-weight:900;">${ns}</p><p style="font-size:12px;color:var(--gr);">Not sched.</p></div></div></div>
    ${months}
-   <div style="display:flex;justify-content:space-between;align-items:baseline;margin:16px 0 6px;">
-     <p style="font-size:15px;font-weight:700;">This week</p><p style="font-size:16px;font-weight:900;">${E(p.weekTotal)}</p></div>
-   <div style="display:flex;gap:5px;margin-bottom:18px;">${strip}</div>
-   <p style="font-size:15px;font-weight:700;margin-bottom:8px;">Recent days</p>
+   <p style="font-size:15px;font-weight:700;margin:16px 0 8px;">Recent days</p>
    <div class="card" id="dayList">${rows||'<p style="padding:16px;font-size:14px;color:var(--lgr);text-align:center;">Your history starts today</p>'}</div>
    <button style="width:100%;height:46px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--gr);font-size:14px;margin:12px 0;" onclick="loadMore(this)">Load 30 more days</button>
-   <button style="display:block;margin:0 auto 8px;color:var(--lgr);font-size:13.5px;" onclick="doLogout()">Sign out</button>
+   <button class="btnOut" style="margin-bottom:8px;" onclick="doLogout()">Sign out</button>
   </div>`;
+}
+async function photoPicked(inp){
+  const f=inp.files&&inp.files[0];inp.value='';if(!f)return;
+  toast('Uploading photo…');
+  try{
+    const url=URL.createObjectURL(f);
+    const img=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=url;});
+    const S2=256,cv=document.createElement('canvas');cv.width=S2;cv.height=S2;
+    const ctx=cv.getContext('2d'),m=Math.min(img.width,img.height);
+    ctx.drawImage(img,(img.width-m)/2,(img.height-m)/2,m,m,0,0,S2,S2);
+    URL.revokeObjectURL(url);
+    const data=cv.toDataURL('image/jpeg',.8);
+    const r=await api('setPhoto',{photo:data});
+    if(r.ok){const me=CG('me')||S.me||{};me.photo=data;S.me=me;CP('me',me);toast('Photo updated');
+      if(S.tab==='me')renderMe(document.getElementById('root'));}
+    else toast(r.msg||'Could not save photo',1);
+  }catch(e){toast('Could not read that image',1);}
 }
 function dayRow(d,i){
   const base=`<p style="font-size:15px;font-weight:700;">${E(d.label)}${d.state==='LIVE'?' · today':''}</p>`;
@@ -343,10 +367,11 @@ function openReq(i){
   let inPre=null;
   if(RQ.missed){const m=d.text.match(/In (\d+:\d+ [AP]M)/);if(m)inPre=m[1];}
   RQ.in=inPre;RQ.out=null;RQ.field=inPre?'out':'in';
+  const flag=RQ.missed?'ABSENT · NO CHECK-OUT':'ABSENT · NO CHECK-IN';
   sheet(`
    <div style="text-align:center;margin-bottom:14px;">
      <p style="font-size:21px;font-weight:900;">${E(d.label)}</p>
-     <p style="font-size:15px;font-weight:700;color:var(--rd);letter-spacing:.05em;margin-top:5px;">MARKED ABSENT · 0 HOURS</p>
+     <p style="font-size:15px;font-weight:700;color:var(--rd);letter-spacing:.05em;margin-top:5px;">${flag}</p>
      <p style="font-size:13.5px;color:var(--gr);margin-top:4px;">Worked this day? Tell Abhishek your times.</p></div>
    <div style="display:flex;gap:10px;margin-bottom:12px;">
      <div id="tIn" onclick="pick('in')" style="flex:1;text-align:center;background:var(--soft);border-radius:12px;padding:12px 6px;border:2px solid transparent;">
@@ -354,7 +379,7 @@ function openReq(i){
        <p id="vIn" style="font-size:21px;font-weight:700;color:${inPre?'var(--bk)':'var(--lgr)'};">${inPre||'Set time'}</p></div>
      <div id="tOut" onclick="pick('out')" style="flex:1;text-align:center;background:var(--soft);border-radius:12px;padding:12px 6px;border:2px solid transparent;">
        <p style="font-size:12px;color:var(--gr);font-weight:700;">LEFT</p><p id="vOut" style="font-size:21px;color:var(--lgr);">Set time</p></div></div>
-   <div id="wheelBox"></div>
+   <div id="timeBox"></div>
    <p style="font-size:13px;font-weight:700;margin:10px 0 5px;">Note for Abhishek <span style="font-weight:400;color:var(--lgr);">· optional</span></p>
    <textarea id="rqNote" maxlength="200" placeholder='What happened? e.g. "Forgot my phone in the car"' style="width:100%;min-height:68px;border:1px solid var(--line);border-radius:12px;padding:11px 13px;resize:none;"></textarea>
    <div style="display:flex;justify-content:space-between;align-items:center;background:#FDF6DC;border-radius:12px;padding:13px 15px;margin:12px 0;">
@@ -363,28 +388,42 @@ function openReq(i){
    <button class="btnGhost" onclick="closeSheet()">Cancel</button>`);
   pick(RQ.field);
 }
+/* --- Simple time entry: hour + minute inputs and AM/PM dropdown --- */
 function pick(f){
   if(f==='in'&&RQ.missed)return;
   RQ.field=f;
   document.getElementById('tIn').style.borderColor=f==='in'?'var(--bk)':'transparent';
   document.getElementById('tOut').style.borderColor=f==='out'?'var(--bk)':'transparent';
-  const cur=RQ[f];
   let h=9,m=0,ap='AM';
+  const cur=RQ[f];
   if(cur){const p=cur.match(/(\d+):(\d+) ([AP]M)/);h=+p[1];m=+p[2];ap=p[3];}
-  const col=(id,items)=>`<div class="wheel" id="${id}"><div class="wpad"></div>${items.map(x=>`<div>${x}</div>`).join('')}<div class="wpad"></div></div>`;
-  document.getElementById('wheelBox').innerHTML=`<div style="position:relative;background:var(--soft);border-radius:12px;display:flex;justify-content:center;">
-   <div class="wsel"></div>${col('wH',[...Array(12)].map((_,i)=>i+1))}${col('wM',[...Array(12)].map((_,i)=>String(i*5).padStart(2,'0')))}${col('wA',['AM','PM'])}</div>
-   <p style="font-size:12px;color:var(--lgr);text-align:center;margin-top:5px;">Scroll to pick · 5-minute steps</p>`;
-  snapTo('wH',h-1);snapTo('wM',Math.round(m/5));snapTo('wA',ap==='AM'?0:1);
-  ['wH','wM','wA'].forEach(id=>{let t;document.getElementById(id).addEventListener('scroll',()=>{clearTimeout(t);t=setTimeout(()=>readWheels(),120);});});
+  const lbl=f==='in'?'Came in at':'Left at';
+  document.getElementById('timeBox').innerHTML=`
+   <div style="background:var(--soft);border-radius:12px;padding:14px;">
+    <p style="font-size:12.5px;color:var(--gr);font-weight:700;margin-bottom:8px;text-align:center;">${lbl}</p>
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
+     <input class="tIn" id="eH" inputmode="numeric" maxlength="2" value="${h}">
+     <span style="font-size:24px;font-weight:900;color:var(--lgr);">:</span>
+     <input class="tIn" id="eM" inputmode="numeric" maxlength="2" value="${String(m).padStart(2,'0')}">
+     <select class="tSel" id="eA"><option${ap==='AM'?' selected':''}>AM</option><option${ap==='PM'?' selected':''}>PM</option></select>
+    </div></div>`;
+  ['eH','eM','eA'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.addEventListener('input',readTime);
+    el.addEventListener('change',readTime);
+    if(el.tagName==='INPUT')el.addEventListener('focus',()=>el.select());
+    if(id==='eM')el.addEventListener('blur',()=>{const v=parseInt(el.value);if(!isNaN(v))el.value=String(Math.min(59,Math.max(0,v))).padStart(2,'0');readTime();});
+  });
+  readTime();
 }
-function snapTo(id,idx){document.getElementById(id).scrollTop=idx*36;}
-function readWheels(){
-  const g=id=>Math.round(document.getElementById(id).scrollTop/36);
-  const h=g('wH')+1,m=g('wM')*5,ap=g('wA')===0?'AM':'PM';
-  RQ[RQ.field]=`${h}:${String(m).padStart(2,'0')} ${ap}`;
+function readTime(){
+  const eH=document.getElementById('eH'),eM=document.getElementById('eM'),eA=document.getElementById('eA');
+  if(!eH)return;
+  let h=parseInt(eH.value),m=parseInt(eM.value);
+  if(isNaN(h)||h<1||h>12||isNaN(m)||m<0||m>59)return;
+  RQ[RQ.field]=`${h}:${String(m).padStart(2,'0')} ${eA.value}`;
   const el=document.getElementById(RQ.field==='in'?'vIn':'vOut');
-  el.textContent=RQ[RQ.field];el.style.color='var(--bk)';
+  el.textContent=RQ[RQ.field];el.style.color='var(--bk)';el.style.fontWeight='700';
   sumReq();
 }
 function to24(t){const p=t.match(/(\d+):(\d+) ([AP]M)/);let h=+p[1]%12;if(p[3]==='PM')h+=12;return h*60+ +p[2];}
@@ -428,21 +467,21 @@ function renderAdmin(r){
 function renderPin(r){
   r.innerHTML=`
   <div style="background:var(--bk);padding:15px 16px;display:flex;justify-content:space-between;align-items:center;">
-    <p style="color:#fff;font-size:18px;font-weight:900;">🛡 Admin</p>
+    <p style="color:#fff;font-size:18px;font-weight:900;">Admin</p>
     <button style="background:#333;color:#fff;border-radius:10px;padding:9px 18px;font-size:14px;font-weight:700;" onclick="go('shop')">Close</button></div>
   <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:62dvh;padding:20px;">
-   <img src="${LOGO}" style="height:64px;object-fit:contain;margin-bottom:24px;">
+   <img src="${LOGO}" class="lgo" style="height:96px;margin-bottom:22px;">
    <p style="font-size:22px;font-weight:900;">Enter admin PIN</p>
    <p style="font-size:14px;color:var(--gr);margin:6px 0 22px;">Authorised access only</p>
    <div id="dots" style="display:flex;gap:16px;margin-bottom:28px;">${[0,1,2,3].map(()=>'<span style="width:16px;height:16px;border-radius:50%;border:2px solid var(--bk);display:inline-block;"></span>').join('')}</div>
-   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">
    ${[1,2,3,4,5,6,7,8,9].map(k=>`<button class="pinKey" onclick="pinKey('${k}')">${k}</button>`).join('')}
-   <span></span><button class="pinKey" onclick="pinKey('0')">0</button><button class="pinKey" onclick="pinKey('⌫')" style="font-size:20px;">⌫</button></div></div>`;
+   <span></span><button class="pinKey" onclick="pinKey('0')">0</button><button class="pinKey" style="color:var(--gr);" onclick="pinKey('del')">${I.back}</button></div></div>`;
   S._pin='';
 }
 function pinKey(k){
   vibe(10);
-  if(k==='⌫')S._pin=S._pin.slice(0,-1);else if(S._pin.length<4)S._pin+=k;
+  if(k==='del')S._pin=S._pin.slice(0,-1);else if(S._pin.length<4)S._pin+=k;
   const d=document.getElementById('dots');
   [...d.children].forEach((c,i)=>{c.style.background=i<S._pin.length?'var(--bk)':'transparent';});
   if(S._pin.length===4){
@@ -461,6 +500,7 @@ function paintInbox(d){
   S._cards=d.cards;
   const b=document.getElementById('admBody');if(!b||S.adminTab!=='todo')return;
   if(!d.cards.length){b.innerHTML='<p style="text-align:center;color:var(--gr);padding:60px 0;font-size:16px;font-weight:700;">All clear ✓</p>';return;}
+  const nAbs=d.cards.filter(c=>c.kind==='ABSENT').length;
   b.innerHTML=d.cards.map((c,i)=>{
     const nice=new Date(c.date+'T12:00').toLocaleDateString('en-CA',{weekday:'short',month:'short',day:'numeric'});
     let line='',btns='';
@@ -478,7 +518,7 @@ function paintInbox(d){
         <div style="flex:1;"><p style="font-size:16px;font-weight:700;">${E(c.name)} · ${nice}</p>
         <p style="font-size:14px;">${line}</p>${c.note?`<p style="font-size:13.5px;color:var(--gr);font-style:italic;margin-top:2px;">"${E(c.note)}"</p>`:''}</div></div>
       <div style="display:flex;gap:8px;">${btns}</div></div>`;
-  }).join('')+`<button style="width:100%;height:46px;border:1px dashed #D3D1C7;border-radius:11px;background:#fff;color:var(--gr);font-size:14px;" onclick="bulkNS(this)">Mark all remaining absents as not scheduled</button>`;
+  }).join('')+(nAbs?`<button style="width:100%;height:46px;border:1px dashed #D3D1C7;border-radius:11px;background:#fff;color:var(--gr);font-size:14px;" onclick="bulkNS(this)">Mark ${nAbs} no-show${nAbs>1?'s':''} as not scheduled</button>`:'');
 }
 async function decide(i,what,extra){
   const c=S._cards[i], el=document.getElementById('card'+i);
@@ -507,7 +547,7 @@ function setTimesUI(i,isReq){
        <p style="font-size:12px;color:var(--gr);font-weight:700;">IN</p><p id="vIn" style="font-size:21px;font-weight:700;color:${RQ.in?'var(--bk)':'var(--lgr)'};">${RQ.in||'Set time'}</p></div>
      <div id="tOut" onclick="pick('out')" style="flex:1;text-align:center;background:var(--soft);border-radius:12px;padding:12px 6px;border:2px solid transparent;">
        <p style="font-size:12px;color:var(--gr);font-weight:700;">OUT</p><p id="vOut" style="font-size:21px;font-weight:700;color:${RQ.out?'var(--bk)':'var(--lgr)'};">${RQ.out||'Set time'}</p></div></div>
-   <div id="wheelBox"></div>
+   <div id="timeBox"></div>
    <div style="display:flex;justify-content:space-between;align-items:center;background:var(--soft);border-radius:12px;padding:13px 15px;margin:12px 0;">
      <span style="font-size:14px;color:var(--gr);">Day total</span><span id="rqSum" style="font-size:18px;font-weight:900;">—</span></div>
    <button class="btnP" onclick="adminSave(this)">Save</button>
