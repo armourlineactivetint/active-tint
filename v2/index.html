@@ -328,7 +328,7 @@ async function photoPicked(inp){
     ctx.drawImage(img,(img.width-m)/2,(img.height-m)/2,m,m,0,0,S2,S2);
     URL.revokeObjectURL(url);
     const data=cv.toDataURL('image/jpeg',.8);
-    const r=await api('setPhoto',{photo:data});
+    const r=await api('uploadPhoto',{dataUrl:data});
     if(r.ok){const me=CG('me')||S.me||{};me.photo=data;S.me=me;CP('me',me);toast('Photo updated');
       if(S.tab==='me')renderMe(document.getElementById('root'));}
     else toast(r.msg||'Could not save photo',1);
