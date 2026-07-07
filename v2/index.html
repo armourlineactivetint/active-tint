@@ -8,31 +8,31 @@
 <title>Active Tint</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-:root{--bk:#1A1A1A;--yl:#F5C518;--rd:#CC1F1F;--brd:#E02020;--gn:#16996b;--am:#854F0B;--gr:#8A8A8A;--lgr:#B4B2A9;--bg:#F4F3EF;--card:#FFFFFF;--line:#E8E6E0;--soft:#F7F6F3;}
+:root{--bk:#1A1A1A;--yl:#F5C518;--rd:#CC1F1F;--brd:#E02020;--gn:#16996b;--am:#854F0B;--gr:#8A8A8A;--lgr:#B4B2A9;--bg:#F1F0EC;--card:#FFFFFF;--line:#E8E6E0;--soft:#F7F6F3;}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--bk);overscroll-behavior-y:none;font-size:16px;}
-#app{max-width:480px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;}
-.view{flex:1;overflow-y:auto;padding-bottom:96px;}
+#app{max-width:480px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;background:var(--bg);}
+.view{flex:1;overflow-y:auto;padding-bottom:92px;}
 button{font-family:inherit;border:none;cursor:pointer;background:none;}
 input,textarea{font-family:inherit;font-size:16px;}
-.hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--card);border-bottom:1px solid var(--line);}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--card);}
 .hlogo{height:34px;display:block;}
 .addr{font-size:12px;color:var(--gr);text-align:right;line-height:1.4;}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;}
-.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:700;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 13px;font-size:13px;font-weight:500;}
 .nav{position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;background:var(--card);border-top:1px solid var(--line);display:flex;padding:9px 0 max(12px,env(safe-area-inset-bottom));z-index:50;}
 .nav button{flex:1;text-align:center;color:var(--lgr);font-size:12px;}
 .nav button.on{color:var(--bk);font-weight:700;}
 .nav svg{width:24px;height:24px;display:block;margin:0 auto 3px;}
-.sk{background:linear-gradient(90deg,#EDEBE5 25%,#F5F4F0 50%,#EDEBE5 75%);background-size:200% 100%;animation:sh 1.2s infinite;border-radius:12px;}
+.sk{background:linear-gradient(90deg,#EDEBE5 25%,#F5F4F0 50%,#EDEBE5 75%);background-size:200% 100%;animation:sh 1.2s infinite;border-radius:10px;}
 @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .sheetwrap{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .18s;}
 .sheetwrap.open{opacity:1;pointer-events:auto;}
-.sheet{background:var(--card);border-radius:20px 20px 0 0;padding:14px 18px calc(22px + env(safe-area-inset-bottom));width:100%;max-width:480px;margin:0 auto;transform:translateY(100%);transition:transform .22s cubic-bezier(.2,.8,.2,1);max-height:88dvh;overflow-y:auto;}
+.sheet{background:var(--card);border-radius:18px 18px 0 0;padding:14px 18px calc(20px + env(safe-area-inset-bottom));width:100%;max-width:480px;margin:0 auto;transform:translateY(100%);transition:transform .22s cubic-bezier(.2,.8,.2,1);max-height:88dvh;overflow-y:auto;}
 .sheetwrap.open .sheet{transform:none;}
 .grab{width:38px;height:4px;border-radius:2px;background:#D3D1C7;margin:0 auto 14px;}
-.btnP{width:100%;height:56px;border-radius:14px;background:var(--bk);color:var(--yl);font-size:16px;font-weight:700;transition:transform .08s;}
+.btnP{width:100%;height:54px;border-radius:13px;background:var(--bk);color:var(--yl);font-size:16px;font-weight:700;transition:transform .08s;}
 .btnP:active{transform:scale(.97);}
 .btnGhost{width:100%;height:44px;color:var(--gr);font-size:14px;}
 .shake{animation:shk .4s;}
@@ -41,73 +41,71 @@ input,textarea{font-family:inherit;font-size:16px;}
 .overlay.open{opacity:1;pointer-events:auto;}
 .row{display:flex;align-items:center;gap:12px;padding:14px;border-bottom:1px solid var(--line);}
 .row:last-child{border-bottom:none;}
-.av{width:44px;height:44px;border-radius:50%;background:#EFEDE7;color:#5F5E5A;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;overflow:hidden;}
+.av{width:42px;height:42px;border-radius:50%;background:#EFEDE7;color:#5F5E5A;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;overflow:hidden;}
 .av img{width:100%;height:100%;object-fit:cover;}
 .seg{display:flex;gap:8px;padding:12px 16px 4px;}
-.seg button{flex:1;padding:12px 0;border-radius:11px;font-size:15px;background:var(--soft);color:var(--gr);}
+.seg button{flex:1;padding:11px 0;border-radius:10px;font-size:14px;background:var(--soft);color:var(--gr);}
 .seg button.on{background:var(--bk);color:#fff;font-weight:700;}
-.abs{color:var(--rd);font-weight:900;font-size:16px;letter-spacing:.03em;}
-.btnR{width:100%;height:46px;border-radius:11px;background:var(--rd);color:#fff;font-size:15px;font-weight:700;}
-.aBtn{flex:1;height:46px;border-radius:11px;font-size:14px;font-weight:700;}
+.abs{color:var(--rd);font-weight:700;font-size:16px;letter-spacing:.03em;}
+.btnR{width:100%;height:44px;border-radius:10px;background:var(--rd);color:#fff;font-size:14px;font-weight:700;}
+.aBtn{flex:1;height:44px;border-radius:10px;font-size:13.5px;font-weight:700;}
 .aG{background:var(--gn);color:#fff;}
 .aN{background:var(--soft);color:#5F5E5A;border:1px solid var(--line);font-weight:400;}
 .aR{background:var(--rd);color:#fff;}
-.bigBtn{width:176px;height:176px;border-radius:50%;color:#fff;font-size:19px;font-weight:900;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;margin:0 auto;box-shadow:0 8px 28px rgba(0,0,0,.18);transition:transform .1s;}
-.bigBtn:active{transform:scale(.94);}
-.bigBtn svg{width:40px;height:40px;}
-.timeIn{width:100%;height:58px;border:1px solid var(--line);border-radius:13px;background:#fff;font-size:22px;font-weight:700;text-align:center;color:var(--bk);}
-.timeIn:disabled{background:var(--soft);color:var(--gr);}
-.statT{flex:1;border-radius:13px;padding:12px;text-align:center;}
+.wheel{height:180px;overflow-y:auto;scroll-snap-type:y mandatory;width:74px;text-align:center;}
+.wheel::-webkit-scrollbar{display:none;}
+.wheel div{height:36px;line-height:36px;scroll-snap-align:center;font-size:18px;color:var(--lgr);}
+.wpad{height:72px;}
+.wsel{position:absolute;left:0;right:0;top:72px;height:36px;background:#fff;border-radius:8px;z-index:0;}
 .spin{width:20px;height:20px;border:3px solid rgba(0,0,0,.15);border-top-color:var(--bk);border-radius:50%;animation:rot .7s linear infinite;display:inline-block;vertical-align:middle;}
 .spinY{width:20px;height:20px;border:3px solid rgba(255,255,255,.25);border-top-color:var(--yl);border-radius:50%;animation:rot .7s linear infinite;display:inline-block;vertical-align:middle;}
-.spinW{width:26px;height:26px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:rot .7s linear infinite;display:inline-block;}
 @keyframes rot{to{transform:rotate(360deg)}}
-.toast{position:fixed;left:50%;transform:translateX(-50%) translateY(20px);bottom:104px;background:var(--bk);color:#fff;font-size:14px;padding:12px 20px;border-radius:999px;z-index:300;opacity:0;transition:all .25s;pointer-events:none;max-width:88%;}
+.toast{position:fixed;left:50%;transform:translateX(-50%) translateY(20px);bottom:100px;background:var(--bk);color:#fff;font-size:14px;padding:12px 20px;border-radius:999px;z-index:300;opacity:0;transition:all .25s;pointer-events:none;max-width:88%;}
 .toast.open{opacity:1;transform:translateX(-50%) translateY(0);}
 .toast.err{background:var(--rd);}
 .pager{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;}
-.pager button{height:46px;min-width:96px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:15px;font-weight:700;color:var(--bk);padding:0 14px;}
-.pager button:disabled{opacity:.3;}
-.pager p{flex:1;text-align:center;font-size:16px;font-weight:900;}
+.pager button{height:44px;min-width:92px;border:1px solid var(--line);border-radius:11px;background:#fff;font-size:14px;font-weight:700;color:var(--bk);padding:0 14px;}
+.pager button:disabled{opacity:.35;}
+.pager p{flex:1;text-align:center;font-size:16px;font-weight:700;}
 .pinKey{width:76px;height:76px;border-radius:50%;background:var(--soft);font-size:24px;font-weight:500;color:var(--bk);}
 .pinKey:active{background:#E8E6E0;}
-.secTitle{font-size:16px;font-weight:900;margin-bottom:9px;}
 </style>
 </head>
 <body>
 <div id="app"><div id="root" class="view"></div><div id="navbar"></div></div>
 <div id="sheets"></div><div id="overlays"></div>
 <div class="toast" id="toast"></div>
-<input type="file" id="photoFile" accept="image/*" style="display:none">
 
 <script>
+/* ============ CONFIG ============ */
 const EXEC='https://script.google.com/macros/s/AKfycbwy8b1fXzpvaaGbcbeYPAxRM8RQQQA1uZLKwXLxVxLi_F451XqOoxxmlXRBzUeSG0OM/exec';
 const SIM=true;
 const LOGO='logo.png';
 
+/* ============ STATE / CACHE ============ */
 const S={tab:'shop',adminOk:false,adminTab:'todo',repTab:'day',repDate:null,repBack:0,me:null,token:localStorage.getItem('at_token')||''};
 const CG=k=>{try{return JSON.parse(localStorage.getItem('at_c_'+k))}catch(e){return null}};
 const CP=(k,v)=>{try{localStorage.setItem('at_c_'+k,JSON.stringify(v))}catch(e){}};
 function vibe(ms){try{navigator.vibrate&&navigator.vibrate(ms)}catch(e){}}
 function toast(m,err){const t=document.getElementById('toast');t.textContent=m;t.className='toast open'+(err?' err':'');vibe(err?[60,40,60]:0);setTimeout(()=>t.className='toast',2400);}
+
+/* ============ API ============ */
 async function api(action,data){
   const body=JSON.stringify(Object.assign({action:action,token:S.token},data||{}));
   const r=await fetch(EXEC,{method:'POST',body:body});
   return r.json();
 }
+
+/* ============ HELPERS ============ */
 const E=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function ini(n){return E((n||'?').split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase());}
 function avat(name,photo,ring){return `<div class="av" ${ring?'style="background:var(--yl);color:var(--bk)"':''}>${photo?`<img src="${E(photo)}">`:ini(name)}</div>`;}
-function fmt12(t24){if(!t24)return'';let[h,m]=t24.split(':').map(Number);const ap=h>=12?'PM':'AM';h=h%12||12;return h+':'+String(m).padStart(2,'0')+' '+ap;}
-function to24(t12){const p=String(t12).match(/(\d+):(\d+)\s*([AP]M)/i);if(!p)return null;let h=+p[1]%12;if(p[3].toUpperCase()==='PM')h+=12;return String(h).padStart(2,'0')+':'+p[2];}
-function minsOf(t24){const[h,m]=t24.split(':').map(Number);return h*60+m;}
 const I={shop:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l1-5h16l1 5M4 9v11h16V9M4 9h16M9 20v-6h6v6"/></svg>',
 user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>',
 lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>',
-tapIn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11.5V5a1.5 1.5 0 013 0v5.5"/><path d="M12 10.5V4a1.5 1.5 0 013 0v6.5M15 10.5a1.5 1.5 0 013 0V15a6 6 0 01-6 6h-1a6 6 0 01-5.2-3L3.5 14a1.5 1.5 0 012.6-1.5L9 15v-3.5"/></svg>',
-out:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 12H4M8 8l-4 4 4 4"/><path d="M11 4h7a2 2 0 012 2v12a2 2 0 01-2 2h-7"/></svg>',
-cam:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h3l2-3h6l2 3h3v12H4z"/><circle cx="12" cy="13" r="3.5"/></svg>'};
+nfc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 8.5a7 7 0 0112 0M8.5 11a4 4 0 017 0"/><circle cx="12" cy="14.5" r="1.6" fill="currentColor" stroke="none"/></svg>'};
 
+/* ============ NAV ============ */
 function nav(){
   document.getElementById('navbar').innerHTML=`<div class="nav">
     <button class="${S.tab==='shop'?'on':''}" onclick="go('shop')">${I.shop}Shop</button>
@@ -115,6 +113,8 @@ function nav(){
     <button class="${S.tab==='admin'?'on':''}" onclick="go('admin')">${I.lock}Admin</button></div>`;
 }
 function go(t){S.tab=t;nav();render();}
+
+/* ============ ROUTER ============ */
 function render(){
   const r=document.getElementById('root');r.scrollTop=0;
   if(!S.token){renderLogin(r);return;}
@@ -123,16 +123,16 @@ function render(){
   else renderAdmin(r);
 }
 
-/* ===== LOGIN ===== */
+/* ============ LOGIN ============ */
 function renderLogin(r){
   r.innerHTML=`<div style="min-height:80dvh;display:flex;flex-direction:column;justify-content:center;padding:0 26px;">
   <img src="${LOGO}" style="height:64px;object-fit:contain;margin:0 auto 8px;display:block;">
   <p style="text-align:center;color:var(--gr);font-size:14px;margin-bottom:30px;">Team attendance</p>
   <div id="lg1"><p style="font-size:14px;font-weight:700;margin-bottom:7px;">Work email</p>
-  <input id="em" type="email" placeholder="name@gmail.com" style="width:100%;height:56px;border:1px solid var(--line);border-radius:14px;padding:0 16px;background:#fff;">
+  <input id="em" type="email" placeholder="name@gmail.com" style="width:100%;height:54px;border:1px solid var(--line);border-radius:13px;padding:0 16px;background:#fff;">
   <button class="btnP" style="margin-top:12px;" onclick="sendOtp(this)">Send code</button></div>
   <div id="lg2" style="display:none;"><p style="font-size:14px;font-weight:700;margin-bottom:7px;">Enter the 6-digit code</p>
-  <input id="cd" inputmode="numeric" maxlength="6" placeholder="••••••" style="width:100%;height:60px;border:1px solid var(--line);border-radius:14px;text-align:center;font-size:26px;letter-spacing:.3em;background:#fff;">
+  <input id="cd" inputmode="numeric" maxlength="6" placeholder="••••••" style="width:100%;height:58px;border:1px solid var(--line);border-radius:13px;text-align:center;font-size:26px;letter-spacing:.3em;background:#fff;">
   <button class="btnP" style="margin-top:12px;" onclick="checkOtp(this)">Sign in</button>
   <button class="btnGhost" onclick="document.getElementById('lg2').style.display='none';document.getElementById('lg1').style.display='block';">Back</button></div></div>`;
 }
@@ -153,54 +153,50 @@ async function checkOtp(b){
   else{b.textContent='Sign in';toast(r.msg||'Wrong code',1);}
 }
 
-/* ===== SHOP ===== */
+/* ============ SHOP (HOME) ============ */
 function renderShop(r){
   const c=CG('shop'), me=CG('me')||S.me||{};
   r.innerHTML=shopHTML(c,me,!c);
   refreshShop();
 }
-function bigButton(inn){
-  if(SIM) return `<button class="bigBtn" style="background:${inn?'var(--brd)':'var(--gn)'};" onclick="doTap(this)">
-    ${inn?I.out:I.tapIn}<span>${inn?'Check out':'Check in'}</span><span style="font-size:11px;font-weight:400;opacity:.8;">simulated tap</span></button>`;
-  return `<div style="text-align:center;">
-    <div class="bigBtn" style="background:${inn?'var(--brd)':'var(--gn)'};opacity:.95;">${inn?I.out:I.tapIn}<span>${inn?'Check out':'Check in'}</span></div>
-    <p style="font-size:14px;color:var(--gr);margin-top:12px;font-weight:700;">Tap your phone on the tag by the door</p></div>`;
-}
 function shopHTML(d,me,skel){
-  const head=`<div class="hdr"><img src="${LOGO}" class="hlogo"><span class="addr">10 Bramhurst Ave,<br>Brampton</span></div>`;
-  if(skel) return head+`<div style="padding:14px 16px;"><div class="sk" style="height:150px;margin-bottom:12px;"></div><div class="sk" style="height:180px;margin-bottom:12px;"></div><div class="sk" style="height:200px;"></div></div>`;
   const inn=d&&d.meIn;
+  const head=`<div class="hdr"><img src="${LOGO}" class="hlogo"><span class="addr">10 Bramhurst Ave,<br>Brampton</span></div>`;
+  if(skel) return head+`<div style="padding:14px 16px;"><div class="sk" style="height:150px;margin-bottom:12px;"></div><div class="sk" style="height:66px;margin-bottom:12px;"></div><div class="sk" style="height:200px;"></div></div>`;
+  /* ===== OUT STATE — gate: no roster until checked in ===== */
   if(!inn){
     return head+`
-    <div style="padding:22px 16px;display:flex;flex-direction:column;align-items:stretch;">
-      <div style="background:var(--brd);border-radius:20px;padding:26px 20px;text-align:center;color:#fff;margin-bottom:26px;">
-        <img src="${LOGO}" style="height:38px;object-fit:contain;margin-bottom:12px;">
-        <p style="font-size:30px;font-weight:900;">YOU'RE OUT</p>
-        <p style="font-size:14px;color:#FFD9D9;margin-top:5px;" id="clock"></p>
+    <div style="padding:20px 16px;display:flex;flex-direction:column;min-height:70dvh;">
+      <div style="background:var(--brd);border-radius:18px;padding:34px 20px;text-align:center;color:#fff;margin-bottom:14px;">
+        <img src="${LOGO}" style="height:40px;object-fit:contain;margin-bottom:14px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3));">
+        <p style="font-size:30px;font-weight:900;letter-spacing:.02em;">YOU'RE OUT</p>
+        <p style="font-size:14px;color:#FFD9D9;margin-top:6px;" id="clock"></p>
         ${d.today&&d.today!=='0 h'?`<p style="font-size:14px;color:#FFD9D9;margin-top:4px;">Today so far: <b style="color:#fff;">${E(d.today)}</b></p>`:''}
       </div>
-      ${bigButton(false)}
-      <p style="text-align:center;font-size:13px;color:var(--lgr);margin-top:24px;">The shop board unlocks once you're in</p>
+      ${SIM?`<button style="display:flex;align-items:center;justify-content:center;gap:9px;width:100%;background:var(--bk);border-radius:14px;padding:17px;color:var(--yl);font-size:16px;font-weight:700;" onclick="doTap(this)">${I.nfc.replace('stroke-width="1.8"','stroke-width="1.8" style="width:21px;height:21px"')} Simulate tap · check in</button>`
+      :`<div style="display:flex;align-items:center;gap:10px;background:#FDF6DC;border:1px solid var(--yl);border-radius:13px;padding:15px;color:#6b5500;font-size:14.5px;font-weight:500;">${I.nfc.replace('stroke-width="1.8"','stroke-width="1.8" style="width:20px;height:20px;flex-shrink:0"')} Tap the tag by the door to check in</div>`}
+      <p style="text-align:center;font-size:13px;color:var(--lgr);margin-top:14px;">The shop board unlocks once you're in</p>
     </div>`;
   }
+  /* ===== IN STATE — full shop board ===== */
   const list=(arr,dim)=>arr.map(p=>`<div class="row">${avat(p.name,p.photo,p.me)}
     <div style="flex:1;"><p style="font-size:15px;font-weight:700;${dim?'color:var(--gr);font-weight:500;':''}">${E(p.name)}${p.me?' <span style="font-size:12px;color:#b98e00;">· you</span>':''}</p>
     <p style="font-size:13px;color:var(--lgr);">${E(p.sub)}</p></div>
     ${dim?'':'<span style="width:10px;height:10px;border-radius:50%;background:var(--gn);"></span>'}</div>`).join('');
   return head+`
-  <div style="position:relative;height:140px;background:#C9BFB2 url('shop.jpg') center/cover;">
+  <div style="position:relative;height:150px;background:#C9BFB2 url('shop.jpg') center/cover;">
     <div class="pill" style="position:absolute;top:10px;right:10px;background:var(--gn);color:#fff;">✓ You're in</div>
     <div style="position:absolute;left:12px;bottom:10px;color:#fff;font-size:14px;font-weight:700;text-shadow:0 1px 4px rgba(0,0,0,.6);" id="clock"></div></div>
-  <div style="padding:16px;">
-    <div style="display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:15px;padding:15px 17px;margin-bottom:20px;">
-      <div><p style="font-size:13px;color:var(--gr);">Today</p><p style="font-size:27px;font-weight:900;">${E(d.today||'0 h')}</p></div>
+  <div style="padding:14px 16px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;background:var(--soft);border-radius:13px;padding:14px 16px;margin-bottom:10px;">
+      <div><p style="font-size:13px;color:var(--gr);">Today</p><p style="font-size:26px;font-weight:900;">${E(d.today||'0 h')}</p></div>
       <div style="text-align:right;"><p style="font-size:13px;color:var(--gr);">In since</p>
-      <p style="font-size:18px;font-weight:700;color:var(--gn);">${E(d.since)}</p></div></div>
-    ${bigButton(true)}
-    <div style="height:24px;"></div>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><p class="secTitle" style="margin:0;">In shop</p><span class="pill" style="background:#E1F5EE;color:#0F6E56;">${d.inShop.length}</span></div>
-    <div class="card" style="margin-bottom:18px;">${d.inShop.length?list(d.inShop):'<p style="padding:16px;font-size:14px;color:var(--lgr);text-align:center;">Nobody in yet</p>'}</div>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><p class="secTitle" style="margin:0;color:var(--gr);">Not in</p><span class="pill" style="background:var(--soft);color:var(--gr);">${d.notIn.length}</span></div>
+      <p style="font-size:17px;font-weight:700;color:var(--gn);">${E(d.since)}</p></div></div>
+    ${SIM?`<button style="display:flex;align-items:center;justify-content:center;gap:9px;width:100%;background:#FDF6DC;border:1px solid var(--yl);border-radius:12px;padding:14px;margin-bottom:16px;color:#6b5500;font-size:14.5px;font-weight:700;" onclick="doTap(this)">${I.nfc.replace('stroke-width="1.8"','stroke-width="1.8" style="width:19px;height:19px"')} Simulate tap · check out</button>`
+      :`<div style="display:flex;align-items:center;gap:9px;background:#FDF6DC;border:1px solid var(--yl);border-radius:12px;padding:13px;margin-bottom:16px;color:#6b5500;font-size:13.5px;">${I.nfc.replace('stroke-width="1.8"','stroke-width="1.8" style="width:18px;height:18px;flex-shrink:0"')} Tap the tag by the door to check out</div>`}
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><p style="font-size:17px;font-weight:700;">In shop</p><span class="pill" style="background:#E1F5EE;color:#0F6E56;">${d.inShop.length}</span></div>
+    <div class="card" style="margin-bottom:16px;">${d.inShop.length?list(d.inShop):'<p style="padding:16px;font-size:14px;color:var(--lgr);text-align:center;">Nobody in yet</p>'}</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><p style="font-size:17px;font-weight:700;color:var(--gr);">Not in</p><span class="pill" style="background:var(--soft);color:var(--gr);">${d.notIn.length}</span></div>
     <div class="card">${d.notIn.length?list(d.notIn,1):'<p style="padding:16px;font-size:14px;color:var(--lgr);text-align:center;">Everyone is in</p>'}</div>
   </div>`;
 }
@@ -224,8 +220,9 @@ function tick(){const c=document.getElementById('clock');if(!c)return;
   const n=new Date();c.textContent=n.toLocaleDateString('en-CA',{weekday:'long',month:'long',day:'numeric'})+' · '+n.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
   setTimeout(tick,30000);}
 
+/* ============ TAP + CONFIRMATION ============ */
 async function doTap(btn){
-  vibe(20);const prev=btn.innerHTML;btn.innerHTML='<span class="spinW"></span>';btn.disabled=true;
+  vibe(20);const prev=btn.innerHTML;btn.innerHTML='<span class="spinY"></span> One sec…';btn.disabled=true;
   const r=await api('tap').catch(()=>({}));
   btn.innerHTML=prev;btn.disabled=false;
   if(!r.ok){toast(r.msg||'Tap failed — try again',1);btn.classList.add('shake');setTimeout(()=>btn.classList.remove('shake'),450);return;}
@@ -235,7 +232,7 @@ function showTapOverlay(r){
   const isIn=r.type==='OPEN';
   const o=document.createElement('div');
   o.className='overlay open';o.style.background=isIn?'var(--gn)':'var(--brd)';
-  o.innerHTML=`<img src="${LOGO}" style="height:44px;object-fit:contain;margin-bottom:22px;">
+  o.innerHTML=`<img src="${LOGO}" style="height:44px;object-fit:contain;margin-bottom:22px;filter:drop-shadow(0 1px 3px rgba(0,0,0,.35));">
    <p style="font-size:72px;line-height:1;${isIn?'':'color:var(--yl);'}">✓</p>
    <p style="font-size:32px;font-weight:900;margin:10px 0 3px;">${isIn?'Checked in':'Checked out'}</p>
    <p style="font-size:17px;opacity:.9;">${E(r.at)}${r.today?' · Today: '+E(r.today):''}</p>
@@ -250,7 +247,7 @@ function showTapOverlay(r){
   setTimeout(()=>{if(o.parentNode)o.remove();},11000);
 }
 
-/* ===== MY PROFILE ===== */
+/* ============ MY PROFILE ============ */
 function renderMe(r){
   const c=CG('prof0'), me=CG('me')||S.me||{};
   r.innerHTML=meHTML(c,me,!c);
@@ -259,7 +256,8 @@ function renderMe(r){
 }
 function meHTML(p,me,skel){
   const head=`<div class="hdr"><img src="${LOGO}" class="hlogo"><span class="addr">10 Bramhurst Ave,<br>Brampton</span></div>`;
-  if(skel) return head+`<div style="padding:16px;"><div class="sk" style="height:70px;margin-bottom:12px;"></div><div class="sk" style="height:110px;margin-bottom:12px;"></div><div class="sk" style="height:300px;"></div></div>`;
+  if(skel) return head+`<div style="padding:16px;">
+    <div class="sk" style="height:64px;margin-bottom:12px;"></div><div class="sk" style="height:120px;margin-bottom:12px;"></div><div class="sk" style="height:300px;"></div></div>`;
   S._days=p.days;
   const inn=p.checkedIn;
   const curYM=p.days.length?p.days[0].date.slice(0,7):'';
@@ -269,8 +267,8 @@ function meHTML(p,me,skel){
     else if(d.state==='ABSENT'||d.state==='MISSED')a++;
     else if(d.state==='NOT_SCHEDULED')ns++;});
   const mName=p.days.length?new Date(p.days[0].date+'T12:00').toLocaleDateString('en-CA',{month:'long'}):'';
-  const months=(p.months||[]).slice(1).map(m=>`<div style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
-    <p style="font-size:15px;font-weight:700;">${E(m.label)}</p><p style="font-size:15px;font-weight:900;">${E(m.total)}</p></div>`).join('');
+  const months=(p.months||[]).slice(1).map(m=>`<div style="background:var(--soft);border-radius:13px;padding:13px 15px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
+    <p style="font-size:15px;font-weight:700;">${E(m.label.split(' ')[0])}</p><p style="font-size:15px;font-weight:700;">${E(m.total)}</p></div>`).join('');
   const today=p.days.length?p.days[0].date:new Date().toISOString().slice(0,10);
   const dow=(new Date(today+'T12:00').getDay()+6)%7;
   const byDate={};p.days.forEach(d=>byDate[d.date]=d);
@@ -282,43 +280,34 @@ function meHTML(p,me,skel){
     if(d){if(d.state==='WORKED'||d.state==='LIVE'){v=(d.mins/60).toFixed(1).replace(/\.0$/,'')+'h';cls='font-weight:700;';}
       else if(d.state==='ABSENT'||d.state==='MISSED'){v='●';cls='color:var(--rd);';}
       else if(d.state==='PENDING'){v='●';cls='color:#EF9F27;';}}
-    strip+=`<div style="flex:1;text-align:center;background:${isT?'#FDF6DC':'var(--card)'};border:1px solid ${isT?'var(--yl)':'var(--line)'};border-radius:10px;padding:7px 0;">
+    strip+=`<div style="flex:1;text-align:center;background:${isT?'#FDF6DC':'var(--soft)'};${isT?'border:1px solid var(--yl);':''}border-radius:9px;padding:6px 0;">
       <p style="font-size:11px;color:${isT?'#8a6d00':'var(--gr)'};">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][i]}</p>
-      <p style="font-size:13px;color:var(--gr);font-weight:700;">${String(dt.getDate()).padStart(2,'0')}</p>
-      <p style="font-size:12px;${cls}">${v}</p></div>`;
+      <p style="font-size:12.5px;color:var(--gr);">${String(dt.getDate()).padStart(2,'0')}</p>
+      <p style="font-size:11.5px;${cls}">${v}</p></div>`;
   }
   const rows=p.days.filter(d=>d.state!=='FUTURE'&&d.state!=='BEFORE_START').map((d,i)=>dayRow(d,i)).join('');
   return head+`
   <div style="padding:16px;">
-   <div class="card" style="display:flex;align-items:center;gap:14px;padding:16px;margin-bottom:18px;">
-     <div style="position:relative;">
-       ${avat(me.name,me.photo,1).replace('class="av"','class="av" style="width:62px;height:62px;font-size:19px;background:var(--yl);color:var(--bk);"')}
-       <button onclick="document.getElementById('photoFile').click()" style="position:absolute;bottom:-4px;right:-4px;width:28px;height:28px;border-radius:50%;background:var(--bk);color:#fff;display:flex;align-items:center;justify-content:center;">${I.cam.replace('stroke-width="1.8"','stroke-width="1.8" style="width:15px;height:15px"')}</button>
-     </div>
+   <div style="display:flex;align-items:center;gap:13px;margin-bottom:16px;">
+     ${avat(me.name,me.photo,1).replace('class="av"','class="av" style="width:56px;height:56px;font-size:17px;background:var(--yl);color:var(--bk);"')}
      <div style="flex:1;"><p style="font-size:19px;font-weight:900;">${E(me.name)}</p>
      <span class="pill" style="background:${inn?'#E1F5EE':'var(--soft)'};color:${inn?'#0F6E56':'var(--gr)'};margin-top:4px;">
      <span style="width:7px;height:7px;border-radius:50%;background:${inn?'var(--gn)':'var(--lgr)'};"></span>${inn?E(p.since):'Out'}</span></div></div>
-
-   <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;">
-     <p class="secTitle" style="margin:0;">This week</p><p style="font-size:17px;font-weight:900;">${E(p.weekTotal)}</p></div>
-   <div style="display:flex;gap:5px;margin-bottom:20px;">${strip}</div>
-
-   <p class="secTitle">${mName} in review</p>
-   <div style="display:flex;gap:8px;margin-bottom:10px;">
-     <div class="statT" style="background:#E1F5EE;"><p style="font-size:24px;font-weight:900;color:#0F6E56;">${w}</p><p style="font-size:12.5px;font-weight:700;color:#0F6E56;">Worked</p></div>
-     <div class="statT" style="background:#FCEBEB;"><p style="font-size:24px;font-weight:900;color:var(--rd);">${a}</p><p style="font-size:12.5px;font-weight:700;color:var(--rd);">Absent</p></div>
-     <div class="statT" style="background:var(--soft);"><p style="font-size:24px;font-weight:900;color:var(--gr);">${ns}</p><p style="font-size:12.5px;font-weight:700;color:var(--gr);">Off days</p></div>
-   </div>
-   <div style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 16px;margin-bottom:10px;display:flex;justify-content:space-between;">
-     <p style="font-size:15px;font-weight:700;">Total this month</p><p style="font-size:15px;font-weight:900;">${E((p.months&&p.months[0])?p.months[0].total:'0 h')}</p></div>
+   <p style="font-size:15px;font-weight:700;margin-bottom:8px;">Months</p>
+   <div style="background:var(--soft);border-radius:13px;padding:13px 15px;margin-bottom:8px;">
+     <div style="display:flex;justify-content:space-between;margin-bottom:9px;"><p style="font-size:15px;font-weight:700;">${mName} in review</p><p style="font-size:15px;font-weight:900;">${E((p.months&&p.months[0])?p.months[0].total:'')}</p></div>
+     <div style="display:flex;gap:8px;">
+       <div style="flex:1;background:#fff;border-radius:10px;padding:9px 11px;"><p style="font-size:19px;font-weight:900;">${w}</p><p style="font-size:12px;color:var(--gn);font-weight:700;">Worked</p></div>
+       <div style="flex:1;background:#fff;border-radius:10px;padding:9px 11px;"><p style="font-size:19px;font-weight:900;">${a}</p><p style="font-size:12px;color:var(--rd);font-weight:700;">Absent</p></div>
+       <div style="flex:1;background:#fff;border-radius:10px;padding:9px 11px;"><p style="font-size:19px;font-weight:900;">${ns}</p><p style="font-size:12px;color:var(--gr);">Not sched.</p></div></div></div>
    ${months}
-
-   <p class="secTitle" style="margin-top:20px;">Recent days</p>
+   <div style="display:flex;justify-content:space-between;align-items:baseline;margin:16px 0 6px;">
+     <p style="font-size:15px;font-weight:700;">This week</p><p style="font-size:16px;font-weight:900;">${E(p.weekTotal)}</p></div>
+   <div style="display:flex;gap:5px;margin-bottom:18px;">${strip}</div>
+   <p style="font-size:15px;font-weight:700;margin-bottom:8px;">Recent days</p>
    <div class="card" id="dayList">${rows||'<p style="padding:16px;font-size:14px;color:var(--lgr);text-align:center;">Your history starts today</p>'}</div>
-   <button style="width:100%;height:48px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--gr);font-size:14px;margin:12px 0 22px;" onclick="loadMore(this)">Load 30 more days</button>
-
-   <button style="display:flex;align-items:center;justify-content:center;gap:9px;width:100%;height:52px;border:1px solid var(--line);border-radius:13px;background:#fff;color:var(--rd);font-size:15px;font-weight:700;" onclick="doLogout()">
-     ${I.out.replace('stroke-width="2"','stroke-width="2" style="width:19px;height:19px"')} Sign out</button>
+   <button style="width:100%;height:46px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--gr);font-size:14px;margin:12px 0;" onclick="loadMore(this)">Load 30 more days</button>
+   <button style="display:block;margin:0 auto 8px;color:var(--lgr);font-size:13.5px;" onclick="doLogout()">Sign out</button>
   </div>`;
 }
 function dayRow(d,i){
@@ -347,72 +336,75 @@ async function loadMore(b){
 function doLogout(){api('logout');logoutLocal();}
 function logoutLocal(){S.token='';S.adminOk=false;localStorage.clear();render();}
 
-/* photo upload */
-document.getElementById('photoFile').addEventListener('change',function(){
-  const f=this.files[0];if(!f)return;
-  const img=new Image(),rd=new FileReader();
-  rd.onload=e=>{img.src=e.target.result;};
-  img.onload=async()=>{
-    const c=document.createElement('canvas'),w=200,h=Math.round(img.height*w/img.width);
-    c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
-    let q=0.7,url=c.toDataURL('image/jpeg',q);
-    while(url.length>48000&&q>0.2){q-=0.1;url=c.toDataURL('image/jpeg',q);}
-    toast('Uploading photo…');
-    const r=await api('uploadPhoto',{dataUrl:url}).catch(()=>({}));
-    if(r.ok){const me=CG('me')||{};me.photo=url;CP('me',me);S.me=me;toast('Photo updated');renderMe(document.getElementById('root'));}
-    else toast(r.msg||'Could not upload',1);
-  };
-  rd.readAsDataURL(f);this.value='';
-});
-
-/* ===== REQUEST REVIEW (native time picker) ===== */
+/* ============ REQUEST REVIEW ============ */
 let RQ={};
-function timeFields(lockIn){
-  return `<div style="display:flex;gap:10px;margin-bottom:4px;">
-    <div style="flex:1;">
-      <p style="font-size:13px;font-weight:700;margin-bottom:6px;color:var(--gn);">→ Came in</p>
-      <input type="time" id="tIn" class="timeIn" step="900" ${lockIn?'disabled':''} value="${RQ.in||''}" onchange="RQ.in=this.value;sumReq()">
-      ${lockIn?'<p style="font-size:11.5px;color:var(--lgr);margin-top:4px;text-align:center;">From your tap · locked</p>':''}
-    </div>
-    <div style="flex:1;">
-      <p style="font-size:13px;font-weight:700;margin-bottom:6px;color:var(--brd);">← Left</p>
-      <input type="time" id="tOut" class="timeIn" step="900" value="${RQ.out||''}" onchange="RQ.out=this.value;sumReq()">
-    </div></div>
-  <p style="font-size:12px;color:var(--lgr);text-align:center;margin-bottom:10px;">Tap a box to set the time</p>`;
+function openReq(i){
+  const d=S._days[i];RQ={date:d.date,label:d.label,missed:d.state==='MISSED'};
+  let inPre=null;
+  if(RQ.missed){const m=d.text.match(/In (\d+:\d+ [AP]M)/);if(m)inPre=m[1];}
+  RQ.in=inPre;RQ.out=null;RQ.field=inPre?'out':'in';
+  sheet(`
+   <div style="text-align:center;margin-bottom:14px;">
+     <p style="font-size:21px;font-weight:900;">${E(d.label)}</p>
+     <p style="font-size:15px;font-weight:700;color:var(--rd);letter-spacing:.05em;margin-top:5px;">MARKED ABSENT · 0 HOURS</p>
+     <p style="font-size:13.5px;color:var(--gr);margin-top:4px;">Worked this day? Tell Abhishek your times.</p></div>
+   <div style="display:flex;gap:10px;margin-bottom:12px;">
+     <div id="tIn" onclick="pick('in')" style="flex:1;text-align:center;background:var(--soft);border-radius:12px;padding:12px 6px;border:2px solid transparent;">
+       <p style="font-size:12px;color:var(--gr);font-weight:700;">CAME IN${RQ.missed?' · locked':''}</p>
+       <p id="vIn" style="font-size:21px;font-weight:700;color:${inPre?'var(--bk)':'var(--lgr)'};">${inPre||'Set time'}</p></div>
+     <div id="tOut" onclick="pick('out')" style="flex:1;text-align:center;background:var(--soft);border-radius:12px;padding:12px 6px;border:2px solid transparent;">
+       <p style="font-size:12px;color:var(--gr);font-weight:700;">LEFT</p><p id="vOut" style="font-size:21px;color:var(--lgr);">Set time</p></div></div>
+   <div id="wheelBox"></div>
+   <p style="font-size:13px;font-weight:700;margin:10px 0 5px;">Note for Abhishek <span style="font-weight:400;color:var(--lgr);">· optional</span></p>
+   <textarea id="rqNote" maxlength="200" placeholder='What happened? e.g. "Forgot my phone in the car"' style="width:100%;min-height:68px;border:1px solid var(--line);border-radius:12px;padding:11px 13px;resize:none;"></textarea>
+   <div style="display:flex;justify-content:space-between;align-items:center;background:#FDF6DC;border-radius:12px;padding:13px 15px;margin:12px 0;">
+     <span style="font-size:14px;color:#6b5500;">You're asking for</span><span id="rqSum" style="font-size:18px;font-weight:900;">—</span></div>
+   <button class="btnP" onclick="sendReq(this)">Send to Abhishek</button>
+   <button class="btnGhost" onclick="closeSheet()">Cancel</button>`);
+  pick(RQ.field);
 }
+function pick(f){
+  if(f==='in'&&RQ.missed)return;
+  RQ.field=f;
+  document.getElementById('tIn').style.borderColor=f==='in'?'var(--bk)':'transparent';
+  document.getElementById('tOut').style.borderColor=f==='out'?'var(--bk)':'transparent';
+  const cur=RQ[f];
+  let h=9,m=0,ap='AM';
+  if(cur){const p=cur.match(/(\d+):(\d+) ([AP]M)/);h=+p[1];m=+p[2];ap=p[3];}
+  const col=(id,items)=>`<div class="wheel" id="${id}"><div class="wpad"></div>${items.map(x=>`<div>${x}</div>`).join('')}<div class="wpad"></div></div>`;
+  document.getElementById('wheelBox').innerHTML=`<div style="position:relative;background:var(--soft);border-radius:12px;display:flex;justify-content:center;">
+   <div class="wsel"></div>${col('wH',[...Array(12)].map((_,i)=>i+1))}${col('wM',[...Array(12)].map((_,i)=>String(i*5).padStart(2,'0')))}${col('wA',['AM','PM'])}</div>
+   <p style="font-size:12px;color:var(--lgr);text-align:center;margin-top:5px;">Scroll to pick · 5-minute steps</p>`;
+  snapTo('wH',h-1);snapTo('wM',Math.round(m/5));snapTo('wA',ap==='AM'?0:1);
+  ['wH','wM','wA'].forEach(id=>{let t;document.getElementById(id).addEventListener('scroll',()=>{clearTimeout(t);t=setTimeout(()=>readWheels(),120);});});
+}
+function snapTo(id,idx){document.getElementById(id).scrollTop=idx*36;}
+function readWheels(){
+  const g=id=>Math.round(document.getElementById(id).scrollTop/36);
+  const h=g('wH')+1,m=g('wM')*5,ap=g('wA')===0?'AM':'PM';
+  RQ[RQ.field]=`${h}:${String(m).padStart(2,'0')} ${ap}`;
+  const el=document.getElementById(RQ.field==='in'?'vIn':'vOut');
+  el.textContent=RQ[RQ.field];el.style.color='var(--bk)';
+  sumReq();
+}
+function to24(t){const p=t.match(/(\d+):(\d+) ([AP]M)/);let h=+p[1]%12;if(p[3]==='PM')h+=12;return h*60+ +p[2];}
 function sumReq(){
   const s=document.getElementById('rqSum');if(!s)return;
   if(!RQ.in||!RQ.out){s.textContent='—';return;}
-  let m=minsOf(RQ.out)-minsOf(RQ.in);if(m<=0)m+=1440;
-  s.textContent=Math.floor(m/60)+' h '+String(m%60).padStart(2,'0')+' m';
+  let mins=to24(RQ.out)-to24(RQ.in);if(mins<=0)mins+=1440;
+  s.textContent=Math.floor(mins/60)+' h '+String(mins%60).padStart(2,'0')+' m';
 }
-function openReq(i){
-  const d=S._days[i];RQ={date:d.date,missed:d.state==='MISSED',in:null,out:null};
-  if(RQ.missed){const m=d.text.match(/In (\d+:\d+ [AP]M)/);if(m)RQ.in=to24(m[1]);}
-  sheet(`
-   <div style="text-align:center;margin-bottom:16px;">
-     <p style="font-size:22px;font-weight:900;">${E(d.label)}</p>
-     <p style="font-size:16px;font-weight:900;color:var(--rd);margin-top:6px;">This day shows ABSENT — 0 hours</p>
-     <p style="font-size:14px;color:var(--gr);margin-top:4px;">Worked this day? Set your times below.</p></div>
-   ${timeFields(RQ.missed)}
-   <p style="font-size:13px;font-weight:700;margin:8px 0 5px;">Note for Abhishek <span style="font-weight:400;color:var(--lgr);">· optional</span></p>
-   <textarea id="rqNote" maxlength="200" placeholder='What happened? e.g. "Forgot my phone in the car"' style="width:100%;min-height:68px;border:1px solid var(--line);border-radius:12px;padding:11px 13px;resize:none;"></textarea>
-   <div style="display:flex;justify-content:space-between;align-items:center;background:#FDF6DC;border-radius:12px;padding:14px 16px;margin:12px 0;">
-     <span style="font-size:14px;color:#6b5500;font-weight:700;">You're asking for</span><span id="rqSum" style="font-size:19px;font-weight:900;">—</span></div>
-   <button class="btnP" onclick="sendReq(this)">Send to Abhishek</button>
-   <button class="btnGhost" onclick="closeSheet()">Cancel</button>`);
-  sumReq();
-}
+function hhmm(t){const p=t.match(/(\d+):(\d+) ([AP]M)/);let h=+p[1]%12;if(p[3]==='PM')h+=12;return String(h).padStart(2,'0')+':'+p[2];}
 async function sendReq(b){
   if(!RQ.in||!RQ.out){toast('Set both times first',1);return;}
   b.innerHTML='<span class="spinY"></span> Sending…';b.disabled=true;
-  const r=await api('requestReview',{date:RQ.date,inTime:RQ.in,outTime:RQ.out,note:document.getElementById('rqNote').value}).catch(()=>({}));
+  const r=await api('requestReview',{date:RQ.date,inTime:hhmm(RQ.in),outTime:hhmm(RQ.out),note:document.getElementById('rqNote').value}).catch(()=>({}));
   closeSheet();
   if(r.ok){toast('Sent to Abhishek — day is pending review');renderMe(document.getElementById('root'));}
   else toast(r.msg||'Could not send',1);
 }
 
-/* ===== SHEETS ===== */
+/* ============ SHEETS ============ */
 function sheet(html){
   const w=document.createElement('div');w.className='sheetwrap';
   w.innerHTML=`<div class="sheet"><div class="grab"></div>${html}</div>`;
@@ -422,7 +414,7 @@ function sheet(html){
 }
 function closeSheet(){const w=document.querySelector('.sheetwrap');if(!w)return;w.classList.remove('open');setTimeout(()=>w.remove(),240);}
 
-/* ===== ADMIN ===== */
+/* ============ ADMIN ============ */
 function renderAdmin(r){
   if(!S.adminOk){renderPin(r);return;}
   r.innerHTML=`<div style="background:var(--bk);padding:15px 16px;display:flex;justify-content:space-between;align-items:center;">
@@ -486,7 +478,7 @@ function paintInbox(d){
         <div style="flex:1;"><p style="font-size:16px;font-weight:700;">${E(c.name)} · ${nice}</p>
         <p style="font-size:14px;">${line}</p>${c.note?`<p style="font-size:13.5px;color:var(--gr);font-style:italic;margin-top:2px;">"${E(c.note)}"</p>`:''}</div></div>
       <div style="display:flex;gap:8px;">${btns}</div></div>`;
-  }).join('')+`<button style="width:100%;height:48px;border:1px dashed #D3D1C7;border-radius:12px;background:#fff;color:var(--gr);font-size:14px;" onclick="bulkNS(this)">Mark all remaining absents as not scheduled</button>`;
+  }).join('')+`<button style="width:100%;height:46px;border:1px dashed #D3D1C7;border-radius:11px;background:#fff;color:var(--gr);font-size:14px;" onclick="bulkNS(this)">Mark all remaining absents as not scheduled</button>`;
 }
 async function decide(i,what,extra){
   const c=S._cards[i], el=document.getElementById('card'+i);
@@ -504,34 +496,42 @@ async function bulkNS(b){
 function setTimesUI(i,isReq){
   const c=S._cards[i];
   const nice=new Date(c.date+'T12:00').toLocaleDateString('en-CA',{weekday:'short',month:'short',day:'numeric'});
-  RQ={date:c.date,cardIdx:i,isReq:isReq,in:null,out:null,missed:false};
-  if(c.kind==='MISSED'){const m=c.line.match(/in (\d+:\d+ [AP]M)/);if(m){RQ.in=to24(m[1]);RQ.missed=true;}}
-  if(isReq){const m=c.line.match(/(\d+:\d+ [AP]M) – (\d+:\d+ [AP]M)/);if(m){RQ.in=to24(m[1]);RQ.out=to24(m[2]);}}
+  RQ={date:c.date,admin:true,cardIdx:i,isReq:isReq,in:null,out:null,field:'in',missed:false};
+  if(c.kind==='MISSED'){const m=c.line.match(/in (\d+:\d+ [AP]M)/);if(m){RQ.in=m[1];RQ.field='out';}}
+  if(isReq){const m=c.line.match(/(\d+:\d+ [AP]M) – (\d+:\d+ [AP]M)/);if(m){RQ.in=m[1];RQ.out=m[2];}}
   sheet(`
-   <div style="text-align:center;margin-bottom:14px;"><p style="font-size:20px;font-weight:900;">${E(c.name)} · ${nice}</p>
-   <p style="font-size:14px;color:var(--gr);margin-top:3px;">Set the real times — hours recalc automatically</p></div>
-   ${timeFields(RQ.missed)}
-   <div style="display:flex;justify-content:space-between;align-items:center;background:var(--soft);border-radius:12px;padding:14px 16px;margin:8px 0 12px;">
-     <span style="font-size:14px;color:var(--gr);font-weight:700;">Day total</span><span id="rqSum" style="font-size:19px;font-weight:900;">—</span></div>
+   <div style="text-align:center;margin-bottom:12px;"><p style="font-size:19px;font-weight:900;">${E(c.name)} · ${nice}</p>
+   <p style="font-size:13.5px;color:var(--gr);">Set the real times — hours recalc automatically</p></div>
+   <div style="display:flex;gap:10px;margin-bottom:12px;">
+     <div id="tIn" onclick="pick('in')" style="flex:1;text-align:center;background:var(--soft);border-radius:12px;padding:12px 6px;border:2px solid transparent;">
+       <p style="font-size:12px;color:var(--gr);font-weight:700;">IN</p><p id="vIn" style="font-size:21px;font-weight:700;color:${RQ.in?'var(--bk)':'var(--lgr)'};">${RQ.in||'Set time'}</p></div>
+     <div id="tOut" onclick="pick('out')" style="flex:1;text-align:center;background:var(--soft);border-radius:12px;padding:12px 6px;border:2px solid transparent;">
+       <p style="font-size:12px;color:var(--gr);font-weight:700;">OUT</p><p id="vOut" style="font-size:21px;font-weight:700;color:${RQ.out?'var(--bk)':'var(--lgr)'};">${RQ.out||'Set time'}</p></div></div>
+   <div id="wheelBox"></div>
+   <div style="display:flex;justify-content:space-between;align-items:center;background:var(--soft);border-radius:12px;padding:13px 15px;margin:12px 0;">
+     <span style="font-size:14px;color:var(--gr);">Day total</span><span id="rqSum" style="font-size:18px;font-weight:900;">—</span></div>
    <button class="btnP" onclick="adminSave(this)">Save</button>
    <button class="btnGhost" onclick="closeSheet()">Cancel</button>`);
-  sumReq();
+  pick(RQ.field);sumReq();
 }
 async function adminSave(b){
   if(!RQ.in||!RQ.out){toast('Set both times',1);return;}
   b.innerHTML='<span class="spinY"></span> Saving…';b.disabled=true;
   const c=S._cards[RQ.cardIdx];let r;
-  if(RQ.isReq) r=await api('decide',{pin:S.adminPin,what:'approveRequest',reqId:c.reqId,inTime:RQ.in,outTime:RQ.out}).catch(()=>({}));
-  else r=await api('setTimes',{pin:S.adminPin,email:c.email,date:c.date,inTime:RQ.in,outTime:RQ.out}).catch(()=>({}));
+  if(RQ.isReq) r=await api('decide',{pin:S.adminPin,what:'approveRequest',reqId:c.reqId,inTime:hhmm(RQ.in),outTime:hhmm(RQ.out)}).catch(()=>({}));
+  else r=await api('setTimes',{pin:S.adminPin,email:c.email,date:c.date,inTime:hhmm(RQ.in),outTime:hhmm(RQ.out)}).catch(()=>({}));
   closeSheet();
   if(r.ok){toast('Saved');loadInbox();}else toast(r.msg||'Failed',1);
 }
+/* Reports */
 function todayStr(){return new Date().toISOString().slice(0,10);}
 function loadReports(){
   const b=document.getElementById('admBody');
   if(!S.repDate)S.repDate=todayStr();
   b.innerHTML=`<div style="display:flex;gap:8px;margin-bottom:12px;">
-    ${['day','week','month'].map(t=>`<button style="flex:1;height:44px;border-radius:11px;font-size:15px;font-weight:700;${S.repTab===t?'background:#FDF6DC;border:1px solid var(--yl);color:var(--bk);':'background:var(--soft);color:var(--gr);'}" onclick="S.repTab='${t}';S.repBack=0;loadReports()">${t[0].toUpperCase()+t.slice(1)}</button>`).join('')}</div>
+    <button class="seg-chip" style="flex:1;height:42px;border-radius:10px;font-size:14px;font-weight:700;${S.repTab==='day'?'background:#FDF6DC;border:1px solid var(--yl);color:var(--bk);':'background:var(--soft);color:var(--gr);'}" onclick="S.repTab='day';loadReports()">Day</button>
+    <button style="flex:1;height:42px;border-radius:10px;font-size:14px;font-weight:700;${S.repTab==='week'?'background:#FDF6DC;border:1px solid var(--yl);color:var(--bk);':'background:var(--soft);color:var(--gr);'}" onclick="S.repTab='week';S.repBack=0;loadReports()">Week</button>
+    <button style="flex:1;height:42px;border-radius:10px;font-size:14px;font-weight:700;${S.repTab==='month'?'background:#FDF6DC;border:1px solid var(--yl);color:var(--bk);':'background:var(--soft);color:var(--gr);'}" onclick="S.repTab='month';S.repBack=0;loadReports()">Month</button></div>
     <div id="repBody"><div class="sk" style="height:180px;"></div></div>`;
   if(S.repTab==='day'){
     const atToday=S.repDate>=todayStr();
@@ -539,10 +539,13 @@ function loadReports(){
       if(!r.ok)return;
       const nice=new Date(S.repDate+'T12:00').toLocaleDateString('en-CA',{weekday:'long',month:'short',day:'numeric'});
       document.getElementById('repBody').innerHTML=`
-       <div class="pager"><button onclick="shiftDay(-1)">‹ Prev</button><p>${nice}</p><button onclick="shiftDay(1)" ${atToday?'disabled':''}>Next ›</button></div>
+       <div class="pager">
+         <button onclick="shiftDay(-1)">‹ Prev</button>
+         <p>${nice}</p>
+         <button onclick="shiftDay(1)" ${atToday?'disabled':''}>Next ›</button></div>
        <div style="display:flex;gap:8px;margin-bottom:10px;">
-         <div class="statT" style="background:#E1F5EE;"><p style="font-size:22px;font-weight:900;color:#0F6E56;">${r.worked}<span style="font-size:13px;font-weight:400;"> of ${r.rows.length}</span></p><p style="font-size:12.5px;font-weight:700;color:#0F6E56;">Worked</p></div>
-         <div class="statT" style="background:var(--soft);"><p style="font-size:22px;font-weight:900;">${E(r.totalHours)}</p><p style="font-size:12.5px;font-weight:700;color:var(--gr);">Total hours</p></div></div>
+         <div style="flex:1;background:var(--soft);border-radius:11px;padding:11px 13px;"><p style="font-size:12.5px;color:var(--gr);">Worked</p><p style="font-size:20px;font-weight:900;">${r.worked}<span style="font-size:13px;color:var(--gr);font-weight:400;"> of ${r.rows.length}</span></p></div>
+         <div style="flex:1;background:var(--soft);border-radius:11px;padding:11px 13px;"><p style="font-size:12.5px;color:var(--gr);">Total hours</p><p style="font-size:20px;font-weight:900;">${E(r.totalHours)}</p></div></div>
        <div class="card">${r.rows.map(p=>`<div class="row">${avat(p.name,p.photo)}
          <div style="flex:1;"><p style="font-size:15px;font-weight:700;">${E(p.name)}${p.edited?' <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#378ADD;"></span>':''}</p>
          <p style="font-size:13px;color:var(--gr);">${E(p.text)||'—'}</p></div>
@@ -552,9 +555,12 @@ function loadReports(){
     api('totals',{pin:S.adminPin,range:S.repTab,back:S.repBack}).then(r=>{
       if(!r.ok)return;
       document.getElementById('repBody').innerHTML=`
-       <div class="pager"><button onclick="S.repBack++;loadReports()">‹ Prev</button><p>${E(r.label)}</p><button onclick="if(S.repBack>0){S.repBack--;loadReports()}" ${S.repBack===0?'disabled':''}>Next ›</button></div>
+       <div class="pager">
+         <button onclick="S.repBack++;loadReports()">‹ Prev</button>
+         <p>${E(r.label)}</p>
+         <button onclick="if(S.repBack>0){S.repBack--;loadReports()}" ${S.repBack===0?'disabled':''}>Next ›</button></div>
        <div class="card" style="margin-bottom:12px;">${r.rows.map(p=>`<div class="row"><p style="flex:1;font-size:15px;">${E(p.name)}</p><p style="font-size:15px;font-weight:900;">${E(p.total)}</p></div>`).join('')}</div>
-       ${S.repTab==='month'?`<button class="btnP" style="height:50px;font-size:15px;" onclick="doCloseMonth(this)">Close this month (after payroll)</button>`:''}`;
+       ${S.repTab==='month'?`<button class="btnP" style="height:48px;font-size:14.5px;" onclick="doCloseMonth(this)">Close this month (after payroll)</button>`:''}`;
     });
   }
 }
@@ -573,6 +579,7 @@ async function doCloseMonth(b){
   loadReports();
 }
 
+/* ============ BOOT ============ */
 nav();render();
 if(S.token)refreshShop();
 </script>
